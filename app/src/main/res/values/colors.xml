@@ -3,4 +3,11 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="royal_blue">#436BFE</color>
+    <color name="tango">#EB7630</color>
+    <color name="caribbean_green">#00C889</color>
+    <color name="roman">#E75852</color>
+    <color name="fuel_yellow">#EAAD2E</color>
+    <color name="black">#000000</color>
 </resources>
