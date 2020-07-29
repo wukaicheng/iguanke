@@ -1,4 +1,4 @@
-package cn.kaicity.app.iguangke.ui
+package cn.kaicity.app.iguangke.ui.base
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +13,9 @@ abstract class BaseAdapter<T : ViewBinding, D> : RecyclerView.Adapter<BaseAdapte
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T> {
-        return ViewHolder(getViewBinding(parent))
+        return ViewHolder(
+            getViewBinding(parent)
+        )
     }
 
 

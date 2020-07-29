@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import cn.kaicity.app.iguangke.databinding.FragmentScoreBinding
-import cn.kaicity.app.iguangke.ui.BaseFragment
-import com.skydoves.transformationlayout.TransformationLayout
-import com.skydoves.transformationlayout.onTransformationEndContainer
+import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
+import cn.kaicity.app.iguangke.ui.base.ChildFragment
 
-class ScoreFragment : BaseFragment() {
+class ScoreFragment : ChildFragment() {
 
     private lateinit var viewBinding: FragmentScoreBinding
 
@@ -23,16 +21,11 @@ class ScoreFragment : BaseFragment() {
         return viewBinding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val params = arguments?.getParcelable<TransformationLayout.Params?>("TransformationParams")
-        onTransformationEndContainer(params)
+    override fun getHeaderViewBinding(): LayoutHeaderBinding {
+        return LayoutHeaderBinding.bind(viewBinding.header.root)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewBinding.title.transitionName = "transText"
-        viewBinding.title.text="123456"
-    }
+    override fun observeLiveData() {
 
+    }
 }

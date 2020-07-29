@@ -11,10 +11,22 @@
         <action
             android:id="@+id/action_mainFragment_to_scoreFragment"
             app:destination="@id/scoreFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/scoreFragment"
         android:name="cn.kaicity.app.iguangke.ui.score.ScoreFragment"
-        android:label="ScoreFragment" />
+        android:label="ScoreFragment" >
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Title" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="cn.kaicity.app.iguangke.ui.login.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

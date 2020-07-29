@@ -5,9 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+    <include android:id="@+id/header" layout="@layout/layout_header" />
 
-    <include layout="@layout/layout_user_header" />
+    <com.skydoves.transformationlayout.TransformationLayout
+        android:id="@+id/transformationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:transformation_duration="450">
+
+        <include
+            android:id="@+id/user_header"
+            layout="@layout/layout_user_header" />
+
+    </com.skydoves.transformationlayout.TransformationLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -18,8 +28,8 @@
         android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="12dp"
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_margin="12dp" />
 </LinearLayout>
