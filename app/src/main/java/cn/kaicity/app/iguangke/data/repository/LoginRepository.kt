@@ -1,12 +1,18 @@
 package cn.kaicity.app.iguangke.data.repository
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
+import cn.kaicity.app.iguangke.App
+import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.LoginBean
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.data.network.api.GKApi
 import cn.kaicity.app.iguangke.util.EncryptUtil
 import cn.kaicity.app.iguangke.util.LogUtil
+import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.Headers
 import java.util.regex.Pattern
@@ -101,6 +107,13 @@ class LoginRepository(private val service: GKApi) {
         val matcher = pattern.matcher(html)
         matcher.find()
         return matcher.group()
+    }
+
+    fun save(userBean: UserBean) {
+        val edit=App.context.getSharedPreferences(KEYS.USER,Context.MODE_PRIVATE).edit()
+        val userData=Gson().toJson(userBean)
+        edit.putString(KEYS.USER,userData)
+        edit.apply()
     }
 
 }

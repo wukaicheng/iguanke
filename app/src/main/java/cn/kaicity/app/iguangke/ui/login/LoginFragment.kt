@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentLoginBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.base.ChildFragment
-import cn.kaicity.app.iguangke.util.InjectionUtil
-import com.google.android.material.snackbar.Snackbar
+import cn.kaicity.app.iguangke.util.InjectorUtil
+import cn.kaicity.app.iguangke.util.showSnack
 
 class LoginFragment : ChildFragment() {
 
@@ -49,7 +51,8 @@ class LoginFragment : ChildFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = InjectionUtil.getLoginViewModel()
+        viewModel =
+            ViewModelProvider(this, InjectorUtil.getLoginFactory()).get(LoginViewModel::class.java)
     }
 
     override fun observeLiveData() {
@@ -67,12 +70,14 @@ class LoginFragment : ChildFragment() {
 
     private fun loginFail(msg: String) {
         viewBinding.loginButton.fail()
-        showToast(msg)
+        showSnack(msg)
     }
 
     private fun loginSuccess(bean: UserBean) {
         viewBinding.loginButton.complete()
-        showToast("登录成功，正在返回")
+        showSnack("登录成功，正在返回")
+        viewModel.saveUserBean(bean)
+        findNavController().navigateUp()
     }
 
 
@@ -80,7 +85,4 @@ class LoginFragment : ChildFragment() {
         viewBinding.loginButton.start()
     }
 
-    private fun showToast(string: String) {
-        Snackbar.make(viewBinding.root, string, Snackbar.LENGTH_LONG).show()
-    }
 }

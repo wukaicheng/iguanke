@@ -36,6 +36,12 @@ interface GKApi {
         @Field("service") service: String = "https://app.gkd.edu.cn/app/user/cas_login"
     ): ResponseBody
 
+    @POST("user/getUserByToken")
+    suspend fun getUserByToken(
+        @Header("XPS-Token") token: String,
+        @Header("XPS-UserId") id: String
+    ): LoginBean
+
     @GET
     suspend fun getLocationByST(@Url url: String): Response<ResponseBody>
 

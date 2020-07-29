@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include android:id="@+id/header" layout="@layout/layout_header" />
+    <include android:id="@+id/header"
+        layout="@layout/layout_header" />
 
     <com.skydoves.transformationlayout.TransformationLayout
         android:id="@+id/transformationLayout"

@@ -7,5 +7,6 @@ class KEYS{
         const val SHARE_LAYOUT="shareLayout"
         const val TRANS_PARAMS="TransformationParams"
         const val TITLE="title"
+        const val USER="user"
     }
 }

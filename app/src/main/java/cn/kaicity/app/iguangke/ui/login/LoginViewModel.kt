@@ -19,4 +19,7 @@ class LoginViewModel(private val mRepo: LoginRepository) : BaseViewModel() {
     }
 
 
+    fun saveUserBean(userBean: UserBean){
+        mRepo.save(userBean)
+    }
 }
