@@ -10,7 +10,6 @@ class MainViewModel(private val mRepo: UserRepository) : BaseViewModel() {
 
     val mUserLiveData = MutableLiveData<StateBean<UserBean>>()
 
-
     fun getUserBean() {
 
         launchOnUI {

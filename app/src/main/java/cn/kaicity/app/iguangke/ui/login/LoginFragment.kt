@@ -11,7 +11,8 @@ import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentLoginBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
-import cn.kaicity.app.iguangke.ui.base.ChildFragment
+import cn.kaicity.app.iguangke.ui.other.ChildFragment
+import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.showSnack
 
@@ -76,7 +77,9 @@ class LoginFragment : ChildFragment() {
     private fun loginSuccess(bean: UserBean) {
         viewBinding.loginButton.complete()
         showSnack("登录成功，正在返回")
-        viewModel.saveUserBean(bean)
+
+        val mUserViewModel=ViewModelProvider(this,InjectorUtil.getUserFactory()).get(UserViewModel::class.java)
+        mUserViewModel.save(bean)
         findNavController().navigateUp()
     }
 

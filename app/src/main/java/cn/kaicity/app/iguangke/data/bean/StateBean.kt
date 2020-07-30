@@ -8,5 +8,6 @@ data class StateBean<T>(val status: Int,val msg:String="", val bean: T?=null)
         const val FAIL=1
         const val LOADING=2
         const val TIMEOUT=3
+        const val EMPTY=4
     }
 }

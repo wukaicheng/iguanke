@@ -1,23 +1,18 @@
 package cn.kaicity.app.iguangke.data.repository
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
-import cn.kaicity.app.iguangke.App
-import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.LoginBean
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
-import cn.kaicity.app.iguangke.data.network.api.GKApi
+import cn.kaicity.app.iguangke.data.network.api.LoginApi
 import cn.kaicity.app.iguangke.util.EncryptUtil
 import cn.kaicity.app.iguangke.util.LogUtil
-import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.Headers
 import java.util.regex.Pattern
 
-class LoginRepository(private val service: GKApi) {
+@Suppress("BlockingMethodInNonBlockingContext")
+class LoginRepository(private val service: LoginApi) {
 
     suspend fun login(
         account: String,
@@ -46,7 +41,7 @@ class LoginRepository(private val service: GKApi) {
 
             val htmlText =
                 service.casLogin("https://app.gkd.edu.cn/app/user/cas_login", cookie ?: "").string()
-            var str = getAccountFromHtml(htmlText)
+            val str = getAccountFromHtml(htmlText)
             if (str.isNullOrEmpty())
                 throw  Exception("登录失败，未知错误2")
 
@@ -56,10 +51,10 @@ class LoginRepository(private val service: GKApi) {
 
             val userBean = createUserBean(loginResult.body(),loginResult.headers())
             LogUtil.log(userBean.toString())
-            mLoginLiveData.postValue(StateBean(StateBean.SUCCESS, "success",userBean))
+            mLoginLiveData.postValue(StateBean(StateBean.SUCCESS,bean = userBean))
 
         } catch (e: Exception) {
-            LogUtil.log(e.message)
+            LogUtil.log(e)
             mLoginLiveData.postValue(StateBean(StateBean.FAIL, "$e.message"))
         }
     }
@@ -77,7 +72,8 @@ class LoginRepository(private val service: GKApi) {
             return bean.item.run {
                 UserBean(
                     headImage = headImage,
-                    name = nickName,
+                    name = xm,
+                    nickName = nickName,
                     token = headers["XPS-Token"]?:"",
                     userId = headers["XPS-UserId"]?:"",
                     xh = xh,
@@ -107,13 +103,6 @@ class LoginRepository(private val service: GKApi) {
         val matcher = pattern.matcher(html)
         matcher.find()
         return matcher.group()
-    }
-
-    fun save(userBean: UserBean) {
-        val edit=App.context.getSharedPreferences(KEYS.USER,Context.MODE_PRIVATE).edit()
-        val userData=Gson().toJson(userBean)
-        edit.putString(KEYS.USER,userData)
-        edit.apply()
     }
 
 }

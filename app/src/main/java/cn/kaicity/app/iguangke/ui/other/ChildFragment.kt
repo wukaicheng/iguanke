@@ -1,4 +1,4 @@
-package cn.kaicity.app.iguangke.ui.base
+package cn.kaicity.app.iguangke.ui.other
 
 import android.os.Bundle
 import android.view.View

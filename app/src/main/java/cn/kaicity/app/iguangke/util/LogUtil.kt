@@ -1,6 +1,7 @@
 package cn.kaicity.app.iguangke.util
 
 import android.util.Log
+import java.lang.Exception
 
 class LogUtil {
 
@@ -14,5 +15,13 @@ class LogUtil {
                 Log.d("gkd", any.toString())
             }
         }
+
+        fun log(exception: Exception) {
+            exception.stackTrace.forEach {
+                log(it.toString())
+            }
+        }
     }
+
+
 }

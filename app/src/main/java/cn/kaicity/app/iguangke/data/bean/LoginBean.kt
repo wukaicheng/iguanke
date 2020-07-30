@@ -8,6 +8,7 @@ data class LoginBean(
 data class Item(
     val headImage: String,
     val nickName: String,
+    val xm:String,
     val phone: String,
     val xh: String,
     val bjmc: String,

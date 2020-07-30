@@ -12,16 +12,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.kaicity.app.iguangke.R
 import cn.kaicity.app.iguangke.data.KEYS
-import cn.kaicity.app.iguangke.data.bean.LoginBean
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentMainBinding
 import cn.kaicity.app.iguangke.databinding.LayoutMainBigitemBinding
 import cn.kaicity.app.iguangke.databinding.LayoutMainItemBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
+import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.showSnack
-import com.bumptech.glide.Glide
 import com.skydoves.transformationlayout.TransformationLayout
 import com.skydoves.transformationlayout.onTransformationStartContainer
 
@@ -45,13 +44,23 @@ class MainFragment : BaseFragment() {
         viewBinding = FragmentMainBinding.inflate(layoutInflater)
         initRecyclerView()
         initUserHeader()
-        viewModel.getUserBean()
         return viewBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getUserBean()
+
     }
 
     private fun initUserHeader() {
         viewBinding.header.headerTitle.setText(R.string.app_name)
-        showErrorUserHeader()
+        setUserHeader(
+            viewBinding.userHeader,
+            getString(R.string.no_login),
+            getString(R.string.app_name),
+            R.drawable.head_img1
+        )
         viewBinding.userHeader.root.setOnClickListener {
             when (userState) {
                 StateBean.FAIL -> {
@@ -81,30 +90,37 @@ class MainFragment : BaseFragment() {
             StateBean.SUCCESS -> {
                 userState = StateBean.SUCCESS
                 stateBean.bean?.also {
-                    viewBinding.userHeader.userName.text = it.name
-                    viewBinding.userHeader.userClass.text = it.className
-                    Glide.with(this).load(it.headImage).into(viewBinding.userHeader.userIcon)
+                    setUserHeader(viewBinding.userHeader, it.nickName, it.className, it.headImage)
+                    //全局共享userbean
+                    val mUserViewModel =
+                        ViewModelProvider(getMainActivity(),InjectorUtil.getUserFactory()).get(UserViewModel::class.java)
+                    mUserViewModel.mUserLiveData.postValue(it)
                 }
 
             }
 
+
             StateBean.TIMEOUT -> {
                 userState = StateBean.FAIL
                 showSnack("登录状态过期，请重新登录")
-                showErrorUserHeader()
+                setUserHeader(
+                    viewBinding.userHeader,
+                    getString(R.string.no_login),
+                    getString(R.string.app_name),
+                    R.drawable.head_img1
+                )
             }
 
             StateBean.FAIL -> {
                 userState = StateBean.FAIL
-                showErrorUserHeader()
+                setUserHeader(
+                    viewBinding.userHeader,
+                    getString(R.string.no_login),
+                    getString(R.string.app_name),
+                    R.drawable.head_img1
+                )
             }
         }
-    }
-
-    private fun showErrorUserHeader() {
-        viewBinding.userHeader.userName.setText(R.string.no_login)
-        viewBinding.userHeader.userClass.setText(R.string.app_name)
-        viewBinding.userHeader.userIcon.setImageResource(R.drawable.head_img1)
     }
 
     override fun observeLiveData() {
@@ -133,6 +149,10 @@ class MainFragment : BaseFragment() {
 
         mAdapter.setOnItemClick { position, binding, data ->
 
+            if (userState != StateBean.SUCCESS) {
+                showSnackWithLogin()
+                return@setOnItemClick
+            }
             var transformationLayout: TransformationLayout? = null
             var itemText: TextView? = null
 
@@ -146,10 +166,18 @@ class MainFragment : BaseFragment() {
                 transformationLayout = (binding as LayoutMainItemBinding).transformationLayout
                 itemText = binding.itemTitle
             }
-
             startFragmentWithData(transformationLayout!!, itemText!!, data.title, data.fragmentId)
         }
 
+    }
+
+    private fun showSnackWithLogin() {
+        showSnack("请先登录","登录"){
+            startFragmentWithData(
+                viewBinding.transformationLayout, viewBinding.userHeader.userName, "登录账号",
+                R.id.action_mainFragment_to_loginFragment
+            )
+        }
     }
 
     private fun startFragmentWithData(

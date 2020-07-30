@@ -8,4 +8,9 @@
     <string name="logining">正在登录</string>
     <string name="login_fail">登录失败</string>
     <string name="login_success">登录成功</string>
+    <string name="score_list">成绩单</string>
+    <string name="score_about">成绩仅供参考</string>
+    <string name="loading">正在加载</string>
+    <string name="empty">获取到的数据为空</string>
+    <string name="retry">重新加载</string>
 </resources>

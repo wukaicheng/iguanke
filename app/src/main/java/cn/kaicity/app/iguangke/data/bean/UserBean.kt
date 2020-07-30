@@ -23,5 +23,6 @@ data class UserBean(
     val readIngYear: String,
     val disciplineName: String,
     val collegeName: String,
+    val nickName:String,
     val xh: String
 )
