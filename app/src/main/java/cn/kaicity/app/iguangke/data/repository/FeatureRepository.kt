@@ -3,6 +3,7 @@ package cn.kaicity.app.iguangke.data.repository
 import androidx.lifecycle.MutableLiveData
 import cn.kaicity.app.iguangke.data.bean.*
 import cn.kaicity.app.iguangke.data.network.api.FeatureApi
+import cn.kaicity.app.iguangke.util.LogUtil
 
 class FeatureRepository(private val api: FeatureApi) {
 
@@ -45,7 +46,9 @@ class FeatureRepository(private val api: FeatureApi) {
     }
 
     suspend fun getMoney(mMoneyLiveData: MutableLiveData<StateBean<List<MoneyItem>>>,pageNum:Int) {
+
         val bean=api.getMoney(pageNum)
+        LogUtil.log(bean)
         if(bean.result!="1"||bean.items.isEmpty()){
             mMoneyLiveData.postValue(StateBean(StateBean.EMPTY))
         }

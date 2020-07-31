@@ -12,8 +12,9 @@ import cn.kaicity.app.iguangke.databinding.FragmentMoneyBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
-import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
+import cn.kaicity.app.iguangke.util.LogUtil
+import cn.kaicity.app.iguangke.util.showSnack
 
 class MoneyFragment : ChildFragment() {
 
@@ -23,14 +24,18 @@ class MoneyFragment : ChildFragment() {
 
     private lateinit var mAdapter: MoneyAdapter
 
-    private var pageNo=0
+    private var pageNo = 0
+
+    private var isLoadMore = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentMoneyBinding.inflate(inflater)
-
+        pageNo = 0
+        isLoadMore = false
         mFeatureViewModel = ViewModelProvider(
             getMainActivity(),
             InjectorUtil.getFeatureFactory()
@@ -40,9 +45,16 @@ class MoneyFragment : ChildFragment() {
     }
 
     private fun initRecycler() {
-        mAdapter=MoneyAdapter()
-        viewBinding.recycler.layoutManager=LinearLayoutManager(requireContext())
-        viewBinding.recycler.adapter= mAdapter
+        mAdapter = MoneyAdapter()
+        viewBinding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        viewBinding.recycler.adapter = mAdapter
+        viewBinding.refreshLayout.setEnableRefresh(false)
+        viewBinding.refreshLayout.setOnLoadMoreListener {
+            isLoadMore = true
+            pageNo++
+            mFeatureViewModel.getMoney(pageNo)
+        }
+        viewBinding.stateView.showLoading()
         mFeatureViewModel.getMoney(pageNo)
     }
 
@@ -55,16 +67,41 @@ class MoneyFragment : ChildFragment() {
         mFeatureViewModel.mMoneyLiveData.observe(this, Observer {
 
             when (it.status) {
-                StateBean.EMPTY -> viewBinding.stateView.showEmpty()
+                StateBean.EMPTY -> {
+                    if (isLoadMore) {
+                        viewBinding.refreshLayout.finishLoadMoreWithNoMoreData()
+                    } else {
+                        viewBinding.stateView.showEmpty()
+                    }
 
-                StateBean.FAIL -> viewBinding.stateView.showRetry()
+                }
+
+                StateBean.FAIL -> {
+                    if (isLoadMore) {
+                        viewBinding.refreshLayout.finishLoadMore()
+                        showSnack("加载下一页失败")
+                    } else {
+                        viewBinding.stateView.showRetry()
+                    }
+
+                }
 
                 StateBean.SUCCESS -> {
-                    viewBinding.stateView.showContent()
-                    mAdapter.replaceData(it.bean!!)
-                    it.bean[0].run{
-                        viewBinding.balance.text=balance
-                        viewBinding.lastDay.text=deadline
+                    it.bean?.run {
+                        if (isLoadMore) {
+                            mAdapter.addData(this)
+                            viewBinding.refreshLayout.finishLoadMore()
+                            if (size < 20) {
+                                viewBinding.refreshLayout.setNoMoreData(true)
+                            }
+
+                        } else {
+                            viewBinding.stateView.showContent()
+                            mAdapter.replaceData(it.bean)
+                            viewBinding.balance.text = get(0).balance
+                            viewBinding.lastDay.text = get(0).deadline
+
+                        }
                     }
                 }
 

@@ -87,6 +87,9 @@ dependencies {
     //loading
     implementation 'com.github.nukc.stateview:kotlin:2.0.2'
 
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

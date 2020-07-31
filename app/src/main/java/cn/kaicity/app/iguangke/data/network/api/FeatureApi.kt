@@ -4,7 +4,6 @@ import cn.kaicity.app.iguangke.data.bean.MoneyBean
 import cn.kaicity.app.iguangke.data.bean.ScoreBean
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface FeatureApi {

@@ -16,7 +16,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
@@ -34,11 +34,11 @@
 
 
             <TextView
+                android:id="@+id/score_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text"
-                android:id="@+id/score_text"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
@@ -49,19 +49,20 @@
 
         </LinearLayout>
 
-   <com.github.nukc.stateview.StateView
+        <com.github.nukc.stateview.StateView
             android:id="@+id/stateView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </com.google.android.material.card.MaterialCardView>
+
     <TextView
-        android:layout_gravity="bottom|center"
-        android:textColor="@color/accent"
-        android:text="@string/data_about"
-        android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="8dp"
+        android:text="@string/data_about"
+        android:textColor="@color/accent" />
 
 
 </LinearLayout>

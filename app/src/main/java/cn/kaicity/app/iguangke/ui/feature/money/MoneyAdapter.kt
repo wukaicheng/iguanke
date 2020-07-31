@@ -34,4 +34,6 @@ class MoneyAdapter : BaseAdapter<ItemMoneyBinding, MoneyItem>() {
         binding.moneyNum.setTextColor(color)
 
     }
+
+
 }
