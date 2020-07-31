@@ -6,7 +6,7 @@ import cn.kaicity.app.iguangke.data.repository.UserRepository
 import cn.kaicity.app.iguangke.ui.base.BaseViewModel
 
 class UserViewModel(
-    val mRepo: UserRepository
+    private val mRepo: UserRepository
 ) : BaseViewModel() {
 
     val mUserLiveData = MutableLiveData<UserBean>()

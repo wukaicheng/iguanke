@@ -1,24 +1,15 @@
 package cn.kaicity.app.iguangke.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import cn.kaicity.app.iguangke.data.bean.ScoreBean
-import cn.kaicity.app.iguangke.data.bean.ScoreShowBean
-import cn.kaicity.app.iguangke.data.bean.StateBean
+import cn.kaicity.app.iguangke.data.bean.*
 import cn.kaicity.app.iguangke.data.network.api.FeatureApi
-import cn.kaicity.app.iguangke.util.LogUtil
-import kotlin.concurrent.thread
 
 class FeatureRepository(private val api: FeatureApi) {
 
-    suspend fun getScore(
-        mScoreLiveData: MutableLiveData<StateBean<ScoreShowBean>>,
-        token: String,
-        id: String
-    ) {
+    suspend fun getScore(mScoreLiveData: MutableLiveData<StateBean<ScoreWithTerm>>) {
         try {
-            val scoreBean = api.getScore(token, id)
+            val scoreBean = api.getScore()
             val bean = decodeScore(scoreBean)
-            Thread.sleep(2000)
             if (bean == null) {
                 mScoreLiveData.postValue(StateBean(StateBean.EMPTY))
             }
@@ -31,7 +22,7 @@ class FeatureRepository(private val api: FeatureApi) {
     }
 
 
-    private fun decodeScore(scoreBean: ScoreBean): ScoreShowBean? {
+    private fun decodeScore(scoreBean: ScoreBean): ScoreWithTerm? {
 
         if (scoreBean.result != "1") {
             return null
@@ -41,16 +32,25 @@ class FeatureRepository(private val api: FeatureApi) {
         val year = scoreBean.years[0]
         val term = scoreBean.scoreList.lastIndex
 
-        val scoreList = mutableListOf<ScoreShowBean.ScoreBean>()
+        val scoreList = mutableListOf<ScoreX>()
         scoreBean.scoreList.filter {
             it.term == term
         }.forEach {
             it.scores.forEach {
-                scoreList.add(ScoreShowBean.ScoreBean(it.course, it.score))
+                scoreList.add(it)
             }
         }
 
-        return ScoreShowBean("$year${termMap[term]}", scoreList)
+        return ScoreWithTerm("$year${termMap[term]}", scoreList)
+    }
+
+    suspend fun getMoney(mMoneyLiveData: MutableLiveData<StateBean<List<MoneyItem>>>,pageNum:Int) {
+        val bean=api.getMoney(pageNum)
+        if(bean.result!="1"||bean.items.isEmpty()){
+            mMoneyLiveData.postValue(StateBean(StateBean.EMPTY))
+        }
+
+        mMoneyLiveData.postValue(StateBean(StateBean.SUCCESS,bean = bean.items))
     }
 
 }

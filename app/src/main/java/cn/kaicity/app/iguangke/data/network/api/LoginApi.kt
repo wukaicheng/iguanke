@@ -37,15 +37,12 @@ interface LoginApi {
     ): ResponseBody
 
     @POST("user/getUserByToken")
-    suspend fun getUserByToken(
-        @Header("XPS-Token") token: String,
-        @Header("XPS-UserId") id: String
-    ): LoginBean
+    suspend fun getUserByToken(): LoginBean
 
-    @GET
-    suspend fun getLocationByST(@Url url: String): Response<ResponseBody>
+    @GET("user/cas_login")
+    suspend fun getLocationByST(@Query("ticket") ticket: String): Response<ResponseBody>
 
-    @GET
-    suspend fun casLogin(@Url url: String, @Header("Cookie") cookie: String): ResponseBody
+    @GET("user/cas_login")
+    suspend fun casLogin(@Header("Cookie") cookie: String): ResponseBody
 
 }

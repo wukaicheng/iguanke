@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import cn.kaicity.app.iguangke.data.bean.MultiLayoutBean
-import cn.kaicity.app.iguangke.databinding.LayoutMainBigitemBinding
-import cn.kaicity.app.iguangke.databinding.LayoutMainItemBinding
+import cn.kaicity.app.iguangke.databinding.ItemMainBigBinding
+import cn.kaicity.app.iguangke.databinding.ItemMainBinding
 
 class MultiAdapter(private val multiData: List<MultiLayoutBean>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -32,7 +32,7 @@ class MultiAdapter(private val multiData: List<MultiLayoutBean>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == ONE_ITEM) {
             return OneViewHolder(
-                LayoutMainBigitemBinding.inflate(
+                ItemMainBigBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -40,7 +40,7 @@ class MultiAdapter(private val multiData: List<MultiLayoutBean>) :
             )
         } else {
             return TwoViewHolder(
-                LayoutMainItemBinding.inflate(
+                ItemMainBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -91,10 +91,10 @@ class MultiAdapter(private val multiData: List<MultiLayoutBean>) :
     }
 
 
-    class OneViewHolder(val bindIng: LayoutMainBigitemBinding) :
+    class OneViewHolder(val bindIng: ItemMainBigBinding) :
         RecyclerView.ViewHolder(bindIng.root)
 
-    class TwoViewHolder(val bindIng: LayoutMainItemBinding) :
+    class TwoViewHolder(val bindIng: ItemMainBinding) :
         RecyclerView.ViewHolder(bindIng.root)
 
 }

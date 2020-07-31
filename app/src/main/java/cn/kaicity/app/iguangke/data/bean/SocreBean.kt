@@ -20,3 +20,5 @@ data class ScoreX(
     val term: String,
     val year: String
 )
+
+data class ScoreWithTerm(val year: String, val score: List<ScoreX>)

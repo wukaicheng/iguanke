@@ -34,13 +34,13 @@ class LoginRepository(private val service: LoginApi) {
             isRealRes(st, "ST")
 
             val res =
-                service.getLocationByST("https://app.gkd.edu.cn/app/user/cas_login?ticket=$st")
+                service.getLocationByST(st)
             val cookie = res.headers()["Set-Cookie"]
             if (cookie.isNullOrEmpty())
                 throw Exception("登录失败，未知错误1")
 
             val htmlText =
-                service.casLogin("https://app.gkd.edu.cn/app/user/cas_login", cookie ?: "").string()
+                service.casLogin(cookie).string()
             val str = getAccountFromHtml(htmlText)
             if (str.isNullOrEmpty())
                 throw  Exception("登录失败，未知错误2")
@@ -49,13 +49,14 @@ class LoginRepository(private val service: LoginApi) {
             val loginResult =
                 service.login(js.get("account").asString, js.asJsonObject.get("pwd").asString)
 
-            val userBean = createUserBean(loginResult.body(),loginResult.headers())
+            val userBean = createUserBean(loginResult.body(), loginResult.headers())
             LogUtil.log(userBean.toString())
-            mLoginLiveData.postValue(StateBean(StateBean.SUCCESS,bean = userBean))
+            mLoginLiveData.postValue(StateBean(StateBean.SUCCESS, bean = userBean))
 
         } catch (e: Exception) {
+            e.printStackTrace()
             LogUtil.log(e)
-            mLoginLiveData.postValue(StateBean(StateBean.FAIL, "$e.message"))
+            mLoginLiveData.postValue(StateBean(StateBean.FAIL, "${e.message}"))
         }
     }
 
@@ -64,7 +65,7 @@ class LoginRepository(private val service: LoginApi) {
         bean: LoginBean?,
         headers: Headers
     ): UserBean {
-        if (bean==null){
+        if (bean == null) {
             throw Exception("登录失败，未知错误3")
         }
 
@@ -74,8 +75,8 @@ class LoginRepository(private val service: LoginApi) {
                     headImage = headImage,
                     name = xm,
                     nickName = nickName,
-                    token = headers["XPS-Token"]?:"",
-                    userId = headers["XPS-UserId"]?:"",
+                    token = headers["XPS-Token"] ?: "",
+                    userId = headers["XPS-UserId"] ?: "",
                     xh = xh,
                     className = bjmc,
                     readIngYear = rxnj,

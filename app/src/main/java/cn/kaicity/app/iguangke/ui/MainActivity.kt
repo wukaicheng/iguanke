@@ -8,8 +8,6 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import cn.kaicity.app.iguangke.R
-import cn.kaicity.app.iguangke.ui.other.GlobalLoadingAdapter
-import com.billy.android.loading.Gloading
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +16,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setStatusBarColor(Color.WHITE)
-        Gloading.initDefault(GlobalLoadingAdapter())
     }
 
     private fun setStatusBarColor(color: Int) {

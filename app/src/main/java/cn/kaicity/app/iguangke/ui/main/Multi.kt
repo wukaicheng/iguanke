@@ -5,15 +5,23 @@ import cn.kaicity.app.iguangke.R
 import cn.kaicity.app.iguangke.data.bean.MultiLayoutBean
 
 class Multi {
-    companion object{
+    companion object {
         val mMultiDataList: List<MultiLayoutBean> by lazy {
             arrayListOf(
+                MultiLayoutBean(
+                    R.id.action_mainFragment_to_moneyFragment,
+                    "余额查询",
+                    "一卡通余额以及消费记录",
+                    R.drawable.ic_money,
+                    true,
+                    App.context.getColor(R.color.caribbean_green)
+                ),
                 MultiLayoutBean(
                     R.id.action_mainFragment_to_scoreFragment,
                     "成绩查询",
                     "期末考试成绩",
                     R.drawable.ic_score,
-                    true,
+                    false,
                     App.context.getColor(R.color.royal_blue)
                 ),
                 MultiLayoutBean(
@@ -23,15 +31,8 @@ class Multi {
                     R.drawable.ic_class,
                     false,
                     App.context.getColor(R.color.roman)
-                ),
-                MultiLayoutBean(
-                    0,
-                    "一卡通查询",
-                    "余额以及消费记录",
-                    R.drawable.ic_money,
-                    false,
-                    App.context.getColor(R.color.caribbean_green)
                 )
+
             )
 
         }

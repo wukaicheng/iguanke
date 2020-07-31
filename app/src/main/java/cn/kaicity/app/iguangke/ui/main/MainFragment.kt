@@ -15,8 +15,8 @@ import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentMainBinding
-import cn.kaicity.app.iguangke.databinding.LayoutMainBigitemBinding
-import cn.kaicity.app.iguangke.databinding.LayoutMainItemBinding
+import cn.kaicity.app.iguangke.databinding.ItemMainBigBinding
+import cn.kaicity.app.iguangke.databinding.ItemMainBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
@@ -159,11 +159,11 @@ class MainFragment : BaseFragment() {
 
             //case
             if (mAdapter.getItemViewType(position) == MultiAdapter.ONE_ITEM) {
-                transformationLayout = (binding as LayoutMainBigitemBinding).transformationLayout
+                transformationLayout = (binding as ItemMainBigBinding).transformationLayout
                 itemText = binding.itemTitle
 
             } else if (mAdapter.getItemViewType(position) == MultiAdapter.TWO_ITEM) {
-                transformationLayout = (binding as LayoutMainItemBinding).transformationLayout
+                transformationLayout = (binding as ItemMainBinding).transformationLayout
                 itemText = binding.itemTitle
             }
             startFragmentWithData(transformationLayout!!, itemText!!, data.title, data.fragmentId)

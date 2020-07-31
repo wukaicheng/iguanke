@@ -27,8 +27,6 @@ class ScoreFragment : ChildFragment() {
 
     private lateinit var mAdapter: ScoreAdapter
 
-    private lateinit var userBean: UserBean
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,7 +63,6 @@ class ScoreFragment : ChildFragment() {
     override fun observeLiveData() {
 
         mUserViewModel.mUserLiveData.observe(this, Observer {
-            userBean = it
             setUserHeader(viewBinding.userHeader, it.name, it.xh, it.headImage)
             viewBinding.userHeader.endImg.visibility = View.GONE
             getScore()
@@ -81,8 +78,8 @@ class ScoreFragment : ChildFragment() {
 
                 StateBean.SUCCESS -> {
                     viewBinding.stateView.showContent()
-                    mAdapter.replaceData(it.bean!!.list)
-                    viewBinding.scoreText.text = it.bean.termName
+                    mAdapter.replaceData(it.bean!!.score)
+                    viewBinding.scoreText.text = it.bean.year
                 }
 
             }
@@ -92,6 +89,6 @@ class ScoreFragment : ChildFragment() {
     private fun getScore() {
         viewBinding.recycler.visibility = View.VISIBLE
         viewBinding.stateView.showLoading()
-        mFeatureViewModel.getScore(userBean.token, userBean.userId)
+        mFeatureViewModel.getScore()
     }
 }

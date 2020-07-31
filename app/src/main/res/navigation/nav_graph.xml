@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_mainFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_moneyFragment"
+            app:destination="@id/moneyFragment" />
     </fragment>
 
     <fragment
@@ -29,4 +32,8 @@
         android:id="@+id/loginFragment"
         android:name="cn.kaicity.app.iguangke.ui.login.LoginFragment"
         android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/moneyFragment"
+        android:name="cn.kaicity.app.iguangke.ui.feature.money.MoneyFragment"
+        android:label="MoneyFragment" />
 </navigation>

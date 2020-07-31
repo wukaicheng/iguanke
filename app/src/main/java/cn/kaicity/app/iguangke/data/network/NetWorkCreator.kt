@@ -1,6 +1,5 @@
 package cn.kaicity.app.iguangke.data.network
 
-import android.util.Log
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,9 +7,12 @@ import java.util.concurrent.TimeUnit
 
 class NetWorkCreator private constructor() {
 
-    private val mCookieMap = HashMap<String, String>()
 
     companion object {
+        var token: String? = null
+
+        var userId: String? = null
+
         val instance: NetWorkCreator by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             NetWorkCreator()
         }
@@ -23,13 +25,29 @@ class NetWorkCreator private constructor() {
         .readTimeout(1, TimeUnit.MINUTES)
         .writeTimeout(1, TimeUnit.MINUTES)
         .addInterceptor {
-            val request = it.request().newBuilder()
-                .addHeader("Accept", "application/json;charset=utf-8")
-                .addHeader(
+            val request = it.request().newBuilder().run {
+                addHeader("Accept", "application/json;charset=utf-8")
+                addHeader(
                     "User-Agent",
                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+                )
 
-                ).build()
+
+                val url = it.request().url.toString()
+                if (url.startsWith(baseUrl) && !url.contains("cas_login")) {
+                    if (token != null) {
+                        addHeader("XPS-Token", token!!)
+                    }
+
+                    if (userId != null) {
+                        addHeader("XPS-UserId", userId!!)
+                    }
+                }
+
+                build()
+            }
+
+
             it.proceed(request)
         }
         .build()

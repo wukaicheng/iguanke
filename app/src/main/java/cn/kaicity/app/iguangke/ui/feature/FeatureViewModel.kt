@@ -1,19 +1,27 @@
 package cn.kaicity.app.iguangke.ui.feature
 
 import androidx.lifecycle.MutableLiveData
-import cn.kaicity.app.iguangke.data.bean.ScoreShowBean
+import cn.kaicity.app.iguangke.data.bean.MoneyItem
+import cn.kaicity.app.iguangke.data.bean.ScoreWithTerm
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.repository.FeatureRepository
 import cn.kaicity.app.iguangke.ui.base.BaseViewModel
-import cn.kaicity.app.iguangke.util.LogUtil
 
 class FeatureViewModel(private val mRepo: FeatureRepository) : BaseViewModel() {
 
-    val mScoreLiveData = MutableLiveData<StateBean<ScoreShowBean>>()
+    val mScoreLiveData = MutableLiveData<StateBean<ScoreWithTerm>>()
 
-    fun getScore(token: String, id: String) {
+    val mMoneyLiveData = MutableLiveData<StateBean<List<MoneyItem>>>()
+    fun getScore() {
         launchOnUI {
-            mRepo.getScore(mScoreLiveData, token, id)
+            mRepo.getScore(mScoreLiveData)
+        }
+    }
+
+    fun getMoney(pageNo: Int) {
+
+        launchOnUI {
+            mRepo.getMoney(mMoneyLiveData, pageNo)
         }
     }
 }

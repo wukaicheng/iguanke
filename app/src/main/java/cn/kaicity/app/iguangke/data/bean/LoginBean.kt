@@ -1,11 +1,11 @@
 package cn.kaicity.app.iguangke.data.bean
 
 data class LoginBean(
-    val item: Item,
+    val item: LoginItem,
     val result: String
 )
 
-data class Item(
+data class LoginItem(
     val headImage: String,
     val nickName: String,
     val xm:String,
