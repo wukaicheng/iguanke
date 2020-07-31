@@ -11,13 +11,11 @@ open class BaseViewModel : ViewModel() {
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
 
-        viewModelScope.launch { block() }
-
-    }
-
-    suspend fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        withContext(Dispatchers.IO) {
-            block
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                block()
+            }
         }
     }
+
 }

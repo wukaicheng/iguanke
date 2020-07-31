@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.github.FlodCoding:LoadingButton:1.0.5'
 
     //loading
-    implementation 'com.billy.android:gloading:1.1.0'
+    implementation 'com.github.nukc.stateview:kotlin:2.0.2'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -5,6 +5,8 @@ import cn.kaicity.app.iguangke.data.bean.ScoreBean
 import cn.kaicity.app.iguangke.data.bean.ScoreShowBean
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.network.api.FeatureApi
+import cn.kaicity.app.iguangke.util.LogUtil
+import kotlin.concurrent.thread
 
 class FeatureRepository(private val api: FeatureApi) {
 
@@ -16,6 +18,7 @@ class FeatureRepository(private val api: FeatureApi) {
         try {
             val scoreBean = api.getScore(token, id)
             val bean = decodeScore(scoreBean)
+            Thread.sleep(2000)
             if (bean == null) {
                 mScoreLiveData.postValue(StateBean(StateBean.EMPTY))
             }
@@ -28,7 +31,7 @@ class FeatureRepository(private val api: FeatureApi) {
     }
 
 
-    fun decodeScore(scoreBean: ScoreBean): ScoreShowBean? {
+    private fun decodeScore(scoreBean: ScoreBean): ScoreShowBean? {
 
         if (scoreBean.result != "1") {
             return null

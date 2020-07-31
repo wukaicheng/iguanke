@@ -39,8 +39,8 @@ abstract class BaseAdapter<T : ViewBinding, D> : RecyclerView.Adapter<BaseAdapte
         return this.list[position]
     }
 
-    open fun replaceData(list: ArrayList<D>) {
-        this.list = list
+    open fun replaceData(list: List<D>) {
+        this.list =ArrayList(list)
         notifyDataSetChanged()
     }
 

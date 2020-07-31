@@ -15,8 +15,7 @@ import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
-import com.billy.android.loading.Gloading
-import kotlinx.android.synthetic.main.layout_loadingview.view.*
+import com.github.nukc.stateview.StateView
 
 class ScoreFragment : ChildFragment() {
 
@@ -25,8 +24,6 @@ class ScoreFragment : ChildFragment() {
     private lateinit var mUserViewModel: UserViewModel
 
     private lateinit var mFeatureViewModel: FeatureViewModel
-
-    private lateinit var mLoadingHolder: Gloading.Holder
 
     private lateinit var mAdapter: ScoreAdapter
 
@@ -48,9 +45,12 @@ class ScoreFragment : ChildFragment() {
     }
 
     private fun initRecyclerView() {
-        mLoadingHolder = Gloading.getDefault().cover(viewBinding.recycler).withRetry {
-            getScore()
+        viewBinding.stateView.onRetryClickListener = object : StateView.OnRetryClickListener {
+            override fun onRetryClick() {
+                getScore()
+            }
         }
+
         mAdapter = ScoreAdapter()
         viewBinding.recycler.adapter = mAdapter
         viewBinding.recycler.layoutManager = LinearLayoutManager(requireContext())
@@ -75,14 +75,14 @@ class ScoreFragment : ChildFragment() {
         mFeatureViewModel.mScoreLiveData.observe(this, Observer {
 
             when (it.status) {
-                StateBean.EMPTY -> mLoadingHolder.showEmpty()
+                StateBean.EMPTY -> viewBinding.stateView.showEmpty()
 
-                StateBean.FAIL -> mLoadingHolder.showLoadFailed()
+                StateBean.FAIL -> viewBinding.stateView.showRetry()
 
                 StateBean.SUCCESS -> {
-                    mLoadingHolder.showLoadSuccess()
-                    mAdapter.addData(it.bean!!.list)
-                    viewBinding.scoreText.text=it.bean.termName
+                    viewBinding.stateView.showContent()
+                    mAdapter.replaceData(it.bean!!.list)
+                    viewBinding.scoreText.text = it.bean.termName
                 }
 
             }
@@ -91,7 +91,7 @@ class ScoreFragment : ChildFragment() {
 
     private fun getScore() {
         viewBinding.recycler.visibility = View.VISIBLE
-        mLoadingHolder.showLoading()
+        viewBinding.stateView.showLoading()
         mFeatureViewModel.getScore(userBean.token, userBean.userId)
     }
 }
