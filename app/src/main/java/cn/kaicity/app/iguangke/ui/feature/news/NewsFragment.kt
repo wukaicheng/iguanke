@@ -23,7 +23,7 @@ class NewsFragment : ChildFragment() {
 
     private lateinit var mAdapter: NewsListAdapter
 
-    private var pageNo = 0
+    private var pageNo = 1
 
     private var isLoadMore = false
 
@@ -41,12 +41,14 @@ class NewsFragment : ChildFragment() {
     }
 
     private fun initRecycler() {
-        mAdapter= NewsListAdapter()
-        viewBinding.recycler.layoutManager=LinearLayoutManager(requireContext())
-        viewBinding.recycler.adapter=mAdapter
+        mAdapter = NewsListAdapter()
+        viewBinding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        viewBinding.recycler.adapter = mAdapter
 
         viewBinding.refreshLayout.setEnableRefresh(false)
         viewBinding.refreshLayout.setOnLoadMoreListener {
+            isLoadMore = true
+            pageNo++
             viewModel.getNews(pageNo)
         }
 

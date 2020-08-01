@@ -8,16 +8,43 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="122dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="88dp" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_margin="12dp"
-        android:lines="2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/primary_text"
-        android:layout_gravity="center"
-        android:textSize="16sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="12dp"
+            android:lines="2"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp" />
+
+            <TextView
+                android:id="@+id/views"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="12dp"
+                android:drawableStart="@drawable/ic_views"
+                android:gravity="center" />
+
+        </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

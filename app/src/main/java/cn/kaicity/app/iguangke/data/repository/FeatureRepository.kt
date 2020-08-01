@@ -62,7 +62,7 @@ class FeatureRepository(private val api: FeatureApi) {
         if (bean.result != "1" || bean.items.isEmpty()) {
             mNewsLiveData.postValue(StateBean(StateBean.EMPTY))
         }
-        LogUtil.log(bean)
+        LogUtil.log(bean.items.size)
 
         mNewsLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean))
     }
