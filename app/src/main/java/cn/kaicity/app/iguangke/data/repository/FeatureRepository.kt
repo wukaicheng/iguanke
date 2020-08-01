@@ -7,6 +7,13 @@ import cn.kaicity.app.iguangke.util.LogUtil
 
 class FeatureRepository(private val api: FeatureApi) {
 
+    companion object{
+
+        val html="""
+            
+        """.trimIndent()
+    }
+
     suspend fun getScore(mScoreLiveData: MutableLiveData<StateBean<ScoreWithTerm>>) {
         try {
             val scoreBean = api.getScore()
@@ -18,7 +25,6 @@ class FeatureRepository(private val api: FeatureApi) {
         } catch (e: Exception) {
             mScoreLiveData.postValue(StateBean(StateBean.FAIL))
         }
-
 
     }
 
@@ -49,22 +55,60 @@ class FeatureRepository(private val api: FeatureApi) {
         pageNum: Int
     ) {
 
-        val bean = api.getMoney(pageNum)
-        if (bean.result != "1" || bean.items.isEmpty()) {
-            mMoneyLiveData.postValue(StateBean(StateBean.EMPTY))
+        try {
+            val bean = api.getMoney(pageNum)
+            if (bean.result != "1" || bean.items.isEmpty()) {
+                mMoneyLiveData.postValue(StateBean(StateBean.EMPTY))
+            }
+            mMoneyLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean.items))
+
+        } catch (e: Exception) {
+
+            e.printStackTrace()
+            LogUtil.log(e)
+            mMoneyLiveData.postValue(StateBean(StateBean.FAIL, msg = "${e.message}"))
         }
 
-        mMoneyLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean.items))
     }
 
     suspend fun getNews(mNewsLiveData: MutableLiveData<StateBean<NewsListBean>>, pageNo: Int) {
-        val bean = api.getNews(pageNo)
-        if (bean.result != "1" || bean.items.isEmpty()) {
-            mNewsLiveData.postValue(StateBean(StateBean.EMPTY))
-        }
-        LogUtil.log(bean.items.size)
+        try {
 
-        mNewsLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean))
+            val bean = api.getNews(pageNo)
+            if (bean.result != "1" || bean.items.isEmpty()) {
+                mNewsLiveData.postValue(StateBean(StateBean.EMPTY))
+            }
+
+            mNewsLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            LogUtil.log(e)
+            mNewsLiveData.postValue(StateBean(StateBean.FAIL, msg = "${e.message}"))
+        }
+
+    }
+
+    suspend fun getNewsDetail(mNewsDetailLiveData: MutableLiveData<StateBean<NewDetailItem>>, id: Int) {
+
+        try {
+
+            val bean = api.getNewsDetail(id)
+            LogUtil.log(bean)
+            if (bean.result != "1" && bean.item.content.isEmpty()) {
+                mNewsDetailLiveData.postValue(StateBean(StateBean.EMPTY))
+            }
+            bean.item.content=createHtml(bean.item.content)
+            LogUtil.log(bean.item.content)
+            mNewsDetailLiveData.postValue(StateBean(StateBean.SUCCESS, bean=bean.item))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            LogUtil.log(e)
+            mNewsDetailLiveData.postValue(StateBean(StateBean.FAIL, msg = "${e.message}"))
+        }
+    }
+
+    private fun createHtml(content: String): String {
+        return content
     }
 
 }

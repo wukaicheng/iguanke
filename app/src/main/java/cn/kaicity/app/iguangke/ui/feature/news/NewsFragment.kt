@@ -4,9 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.kaicity.app.iguangke.R
+import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.databinding.FragmentNewslistBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
@@ -14,6 +19,7 @@ import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.showSnack
+import kotlinx.android.synthetic.main.item_news.*
 
 class NewsFragment : ChildFragment() {
 
@@ -52,6 +58,22 @@ class NewsFragment : ChildFragment() {
             viewModel.getNews(pageNo)
         }
 
+        mAdapter.setOnItemClick { position, binding, data ->
+
+            binding.imageView.transitionName = KEYS.SHARE_IMAGE + position
+            val url = data.logos.first()
+            val extras = FragmentNavigatorExtras(
+                binding.imageView to url
+            )
+
+            val bundle = bundleOf(KEYS.URL to url, KEYS.TITLE to data.name, KEYS.ID to data.id)
+            findNavController().navigate(
+                R.id.action_newsFragment_to_newDetailFragment,
+                bundle,
+                null,
+                extras
+            )
+        }
         viewModel.getNews(pageNo)
     }
 

@@ -1,8 +1,6 @@
 package cn.kaicity.app.iguangke.data.network.api
 
-import cn.kaicity.app.iguangke.data.bean.MoneyBean
-import cn.kaicity.app.iguangke.data.bean.NewsListBean
-import cn.kaicity.app.iguangke.data.bean.ScoreBean
+import cn.kaicity.app.iguangke.data.bean.*
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -29,5 +27,10 @@ interface FeatureApi {
         @Field("pageSize") size: Int = 10,
         @Field("typeId") id: Int = 144
     ): NewsListBean
+    @POST("information/getInformation.do")
+    @FormUrlEncoded
+    suspend fun getNewsDetail(
+        @Field("informationId") pageNo: Int
+    ): NewsBean
 
 }

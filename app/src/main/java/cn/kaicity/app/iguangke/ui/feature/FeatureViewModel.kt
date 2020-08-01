@@ -1,10 +1,7 @@
 package cn.kaicity.app.iguangke.ui.feature
 
 import androidx.lifecycle.MutableLiveData
-import cn.kaicity.app.iguangke.data.bean.MoneyItem
-import cn.kaicity.app.iguangke.data.bean.NewsListBean
-import cn.kaicity.app.iguangke.data.bean.ScoreWithTerm
-import cn.kaicity.app.iguangke.data.bean.StateBean
+import cn.kaicity.app.iguangke.data.bean.*
 import cn.kaicity.app.iguangke.data.repository.FeatureRepository
 import cn.kaicity.app.iguangke.ui.base.BaseViewModel
 
@@ -15,6 +12,8 @@ class FeatureViewModel(private val mRepo: FeatureRepository) : BaseViewModel() {
     val mMoneyLiveData = MutableLiveData<StateBean<List<MoneyItem>>>()
 
     val mNewsLiveData  =MutableLiveData<StateBean<NewsListBean>>()
+
+    val mNewsDetailLiveData = MutableLiveData<StateBean<NewDetailItem>>()
 
     fun getScore() {
         launchOnUI {
@@ -32,6 +31,12 @@ class FeatureViewModel(private val mRepo: FeatureRepository) : BaseViewModel() {
     fun getNews(pageNo: Int){
         launchOnUI {
             mRepo.getNews(mNewsLiveData,pageNo)
+        }
+    }
+
+    fun getNewsDetail(id:Int){
+        launchOnUI {
+         mRepo.getNewsDetail(mNewsDetailLiveData,id)
         }
     }
 }

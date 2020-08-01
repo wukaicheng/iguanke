@@ -59,9 +59,23 @@
         android:name="cn.kaicity.app.iguangke.ui.feature.money.MoneyFragment"
         android:label="MoneyFragment"
         tools:layout="@layout/fragment_money" />
+
     <fragment
         android:id="@+id/newsFragment"
         android:name="cn.kaicity.app.iguangke.ui.feature.news.NewsFragment"
         android:label="NewsFragment"
-        tools:layout="@layout/fragment_newslist" />
+        tools:layout="@layout/fragment_newslist">
+        <action
+            android:id="@+id/action_newsFragment_to_newDetailFragment"
+            app:destination="@id/newDetailFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newDetailFragment"
+        android:name="cn.kaicity.app.iguangke.ui.feature.news.NewDetailFragment"
+        android:label="NewDetailFragment" />
 </navigation>

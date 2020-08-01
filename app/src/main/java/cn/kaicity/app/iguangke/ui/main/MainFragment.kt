@@ -187,7 +187,7 @@ class MainFragment : BaseFragment() {
     ) {
         itemText.transitionName = title
         val extras = FragmentNavigatorExtras(itemText to title)
-        val bundle = bundleOf(Pair("title", title))
+        val bundle = bundleOf("title" to title)
         findNavController().navigate(id, bundle, null, extras)
 
     }

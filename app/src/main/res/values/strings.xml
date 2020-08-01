@@ -17,4 +17,5 @@
     <string name="yuan">元</string>
     <string name="bill">账单详情</string>
     <string name="zero">00.00</string>
+    <string name="news_detail">新闻详情</string>
 </resources>
