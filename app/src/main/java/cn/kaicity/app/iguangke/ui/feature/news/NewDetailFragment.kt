@@ -3,18 +3,13 @@ package cn.kaicity.app.iguangke.ui.feature.news
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.drawable.toBitmap
+import android.webkit.WebViewClient
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.palette.graphics.Palette
 import androidx.transition.TransitionInflater
 import cn.kaicity.app.iguangke.R
 import cn.kaicity.app.iguangke.data.KEYS
@@ -25,12 +20,9 @@ import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.LogUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.google.android.material.appbar.AppBarLayout
+import java.io.File
 
 
 class NewDetailFragment : BaseFragment() {
@@ -97,10 +89,6 @@ class NewDetailFragment : BaseFragment() {
                 PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         })
 
-        viewBinding.webView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-
-            viewBinding.appBarLayout.setExpanded(scrollX<oldScrollX,true)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,13 +116,11 @@ class NewDetailFragment : BaseFragment() {
 
                 StateBean.SUCCESS -> {
                     viewBinding.stateView.showContent()
-                    viewBinding.webView.loadData(it.bean?.content,"text/html", "UTF-8")
-                    LogUtil.log(it.bean)
+                    viewBinding.webView.loadDataWithBaseURL("",it.bean?.content,"text/html", "UTF-8",null)
                 }
 
             }
         })
     }
-
 
 }

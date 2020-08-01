@@ -1,17 +1,20 @@
 package cn.kaicity.app.iguangke.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import cn.kaicity.app.iguangke.data.bean.*
 import cn.kaicity.app.iguangke.data.network.api.FeatureApi
 import cn.kaicity.app.iguangke.util.LogUtil
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
+
 
 class FeatureRepository(private val api: FeatureApi) {
 
     companion object{
 
-        val html="""
-            
-        """.trimIndent()
+        val html="<html><head></head><body>%s</body></html>"
     }
 
     suspend fun getScore(mScoreLiveData: MutableLiveData<StateBean<ScoreWithTerm>>) {
@@ -108,7 +111,25 @@ class FeatureRepository(private val api: FeatureApi) {
     }
 
     private fun createHtml(content: String): String {
-        return content
+        val newStr=String.format(html,content)
+        return getNewData(newStr)
     }
 
+    private fun getNewData(data: String): String {
+        val document: Document = Jsoup.parse(data)
+        val pElements: Elements = document.select("p:has(img)")
+        for (pElement in pElements) {
+            pElement.attr("style", "text-align:center")
+            pElement.attr("max-width","100%")
+                .attr("height", "auto")
+        }
+        val imgElements: Elements = document.select("img")
+        for (imgElement in imgElements) {
+            //重新设置宽高
+            imgElement.attr("max-width", "100%")
+                .attr("height", "auto")
+            imgElement.attr("style", "max-width:100%;height:auto")
+        }
+        return document.toString()
+    }
 }
