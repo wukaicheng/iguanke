@@ -19,6 +19,7 @@ import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.LogUtil
+import cn.kaicity.app.iguangke.util.TimeUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
@@ -49,9 +50,9 @@ class NewDetailFragment : BaseFragment() {
         val url = arguments?.getString(KEYS.URL)
         initImage(url)
         initToolbar()
-        val id=arguments?.getInt(KEYS.ID)
+        val id = arguments?.getInt(KEYS.ID)
         id?.run {
-
+            viewBinding.stateView.showLoading()
             viewModel.getNewsDetail(id)
         }
     }
@@ -65,6 +66,7 @@ class NewDetailFragment : BaseFragment() {
         Glide.with(this).load(url).apply(requestOptions).into(viewBinding.background)
     }
 
+    // TODO: 2020/8/1 待优化
     private fun initToolbar() {
         getMainActivity().setSupportActionBar(viewBinding.toolbar)
         setHasOptionsMenu(true)
@@ -115,8 +117,17 @@ class NewDetailFragment : BaseFragment() {
                 StateBean.FAIL -> viewBinding.stateView.showRetry()
 
                 StateBean.SUCCESS -> {
-                    viewBinding.stateView.showContent()
-                    viewBinding.webView.loadDataWithBaseURL("",it.bean?.content,"text/html", "UTF-8",null)
+                    it.bean?.run {
+                        viewBinding.stateView.showContent()
+                        viewBinding.webView.loadDataWithBaseURL(
+                            "",
+                            content,
+                            "text/html",
+                            "UTF-8",
+                            null
+                        )
+                    }
+
                 }
 
             }

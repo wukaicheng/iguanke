@@ -1,10 +1,10 @@
 package cn.kaicity.app.iguangke.data.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import cn.kaicity.app.iguangke.data.bean.*
 import cn.kaicity.app.iguangke.data.network.api.FeatureApi
 import cn.kaicity.app.iguangke.util.LogUtil
+import cn.kaicity.app.iguangke.util.TimeUtil
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -14,7 +14,20 @@ class FeatureRepository(private val api: FeatureApi) {
 
     companion object{
 
-        val html="<html><head></head><body>%s</body></html>"
+        val html="""
+            <html>
+                <head>
+                </head>
+                <body>
+                <center> <span style="font-size: 25px;">%s</span></center>
+                <div align="right">
+                %s
+                </div>
+                %s
+                </body>
+            </html>
+            
+        """.trimIndent()
     }
 
     suspend fun getScore(mScoreLiveData: MutableLiveData<StateBean<ScoreWithTerm>>) {
@@ -96,12 +109,10 @@ class FeatureRepository(private val api: FeatureApi) {
         try {
 
             val bean = api.getNewsDetail(id)
-            LogUtil.log(bean)
             if (bean.result != "1" && bean.item.content.isEmpty()) {
                 mNewsDetailLiveData.postValue(StateBean(StateBean.EMPTY))
             }
-            bean.item.content=createHtml(bean.item.content)
-            LogUtil.log(bean.item.content)
+            bean.item.content=createHtml(bean.item.content,bean.item.name,bean.item.createDate)
             mNewsDetailLiveData.postValue(StateBean(StateBean.SUCCESS, bean=bean.item))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -110,8 +121,8 @@ class FeatureRepository(private val api: FeatureApi) {
         }
     }
 
-    private fun createHtml(content: String): String {
-        val newStr=String.format(html,content)
+    private fun createHtml(content: String, name: String, createDate: Long): String {
+        val newStr=String.format(html,name,TimeUtil.longToStrWithTime(createDate),content)
         return getNewData(newStr)
     }
 

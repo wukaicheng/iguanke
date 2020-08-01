@@ -20,11 +20,13 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.webkit.WebView
+import androidx.core.view.MotionEventCompat
 import androidx.core.view.NestedScrollingChild
 import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
 
- class NestedWebView @JvmOverloads constructor(
+
+class NestedWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = android.R.attr.webViewStyle
@@ -33,55 +35,64 @@ import androidx.core.view.ViewCompat
     private val mScrollOffset = IntArray(2)
     private val mScrollConsumed = IntArray(2)
     private val mChildHelper = NestedScrollingChildHelper(rootView)
-    private var mLastY: Float = 0F
-    private var mNestedOffsetY: Float = 0F
+    private var mLastY: Int = 0
+
+    private var mNestedYOffset = 0
 
     init {
         isNestedScrollingEnabled = true
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(ev: MotionEvent): Boolean {
-        val event = obtain(ev)
-        var returnValue = false
-
-        event.offsetLocation(0f, mNestedOffsetY)
-
-        when (ev.action) {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        var result = false
+        val trackedEvent = obtain(event)
+        val action = MotionEventCompat.getActionMasked(event)
+        if (action == ACTION_DOWN) {
+            mNestedYOffset = 0
+        }
+        val y = event.y.toInt()
+        event.offsetLocation(0f, mNestedYOffset.toFloat())
+        when (action) {
             ACTION_DOWN -> {
-                returnValue = super.onTouchEvent(event)
-                mLastY = event.y
-                // start NestedScroll
-                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
+                mLastY = y
+                var nestedScrollAxis = ViewCompat.SCROLL_AXIS_VERTICAL
+                nestedScrollAxis = nestedScrollAxis or ViewCompat.SCROLL_AXIS_HORIZONTAL //按位或运算
+
+//                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+                startNestedScroll(nestedScrollAxis)
+                result = super.onTouchEvent(event)
             }
             ACTION_MOVE -> {
-                var deltaY = mLastY - event.y
-                // NestedPreScroll
-                if (dispatchNestedPreScroll(0, deltaY.toInt(), mScrollConsumed, mScrollOffset)) {
+                var deltaY: Int = mLastY - y
+                if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
                     deltaY -= mScrollConsumed[1]
-                    mLastY = event.y - mScrollOffset[1]
-                    event.offsetLocation(0f, (-mScrollOffset[1]).toFloat())
-                    mNestedOffsetY += mScrollOffset[1]
+                    trackedEvent.offsetLocation(0f, mScrollOffset[1].toFloat())
+                    mNestedYOffset += mScrollOffset[1]
                 }
-
-                returnValue = super.onTouchEvent(event)
-
-                // NestedScroll
-                if (dispatchNestedScroll(0, mScrollOffset[1], 0, deltaY.toInt(), mScrollOffset)) {
-                    event.offsetLocation(0f, mScrollOffset[1].toFloat())
-                    mNestedOffsetY += mScrollOffset[1]
+                val oldY = scrollY
+                mLastY = y - mScrollOffset[1]
+                val newScrollY = Math.max(0, oldY + deltaY)
+                deltaY -= newScrollY - oldY
+                if (dispatchNestedScroll(0, newScrollY - deltaY, 0, deltaY, mScrollOffset)) {
                     mLastY -= mScrollOffset[1]
+                    trackedEvent.offsetLocation(0f, mScrollOffset[1].toFloat())
+                    mNestedYOffset += mScrollOffset[1]
                 }
+                if (mScrollConsumed[1] == 0 && mScrollOffset[1] == 0) {
+                    trackedEvent.recycle()
+                    result = super.onTouchEvent(trackedEvent)
+                }
+
             }
-            ACTION_UP, ACTION_CANCEL -> {
-                mNestedOffsetY = 0F
-                returnValue = super.onTouchEvent(event)
-                // end NestedScroll
+            ACTION_POINTER_DOWN, ACTION_UP, ACTION_CANCEL -> {
                 stopNestedScroll()
+                result = super.onTouchEvent(event)
             }
         }
-        return returnValue
+        return result
     }
+
 
     // Nested Scroll implements
     override fun setNestedScrollingEnabled(enabled: Boolean) {
