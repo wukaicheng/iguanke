@@ -1,5 +1,6 @@
 package cn.kaicity.app.iguangke.ui.base
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -70,6 +71,10 @@ abstract class BaseAdapter<T : ViewBinding, D> : RecyclerView.Adapter<BaseAdapte
     fun setOnItemClick(function: (position: Int, binding: T, data: D) -> Unit) {
         this.onItemClick = function
 
+    }
+
+    fun getInflater(parent: ViewGroup):LayoutInflater{
+        return LayoutInflater.from(parent.context)
     }
 
 

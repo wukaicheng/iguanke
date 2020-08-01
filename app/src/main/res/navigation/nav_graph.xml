@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_mainFragment_to_moneyFragment"
             app:destination="@id/moneyFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
     </fragment>
 
     <fragment
@@ -36,4 +39,8 @@
         android:id="@+id/moneyFragment"
         android:name="cn.kaicity.app.iguangke.ui.feature.money.MoneyFragment"
         android:label="MoneyFragment" />
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="cn.kaicity.app.iguangke.ui.feature.news.NewsFragment"
+        android:label="NewsFragment" />
 </navigation>

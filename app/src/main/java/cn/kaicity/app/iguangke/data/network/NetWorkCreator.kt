@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit
 
 class NetWorkCreator private constructor() {
 
+    private val blockList = arrayOf("cas_login", "information")
 
     companion object {
         var token: String? = null
@@ -24,7 +25,7 @@ class NetWorkCreator private constructor() {
         .connectTimeout(1, TimeUnit.MINUTES)
         .readTimeout(1, TimeUnit.MINUTES)
         .writeTimeout(1, TimeUnit.MINUTES)
-        .addInterceptor {
+        .addInterceptor { it ->
             val request = it.request().newBuilder().run {
                 addHeader("Accept", "application/json;charset=utf-8")
                 addHeader(
@@ -34,7 +35,11 @@ class NetWorkCreator private constructor() {
 
 
                 val url = it.request().url.toString()
-                if (url.startsWith(baseUrl) && !url.contains("cas_login")) {
+                val inBlock = blockList.filter {str->
+                    url.contains(str)
+                }.isEmpty()
+
+                if (url.startsWith(baseUrl) &&inBlock) {
                     if (token != null) {
                         addHeader("XPS-Token", token!!)
                     }

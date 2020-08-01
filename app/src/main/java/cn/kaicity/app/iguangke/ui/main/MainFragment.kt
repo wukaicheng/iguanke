@@ -20,6 +20,7 @@ import cn.kaicity.app.iguangke.databinding.ItemMainBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
+import cn.kaicity.app.iguangke.util.MultiUtil
 import cn.kaicity.app.iguangke.util.showSnack
 import com.skydoves.transformationlayout.TransformationLayout
 import com.skydoves.transformationlayout.onTransformationStartContainer
@@ -91,9 +92,11 @@ class MainFragment : BaseFragment() {
                 userState = StateBean.SUCCESS
                 stateBean.bean?.also {
                     setUserHeader(viewBinding.userHeader, it.nickName, it.className, it.headImage)
-                    //全局共享userbean
+
                     val mUserViewModel =
-                        ViewModelProvider(getMainActivity(),InjectorUtil.getUserFactory()).get(UserViewModel::class.java)
+                        ViewModelProvider(getMainActivity(), InjectorUtil.getUserFactory()).get(
+                            UserViewModel::class.java
+                        )
                     mUserViewModel.mUserLiveData.postValue(it)
                 }
 
@@ -132,7 +135,7 @@ class MainFragment : BaseFragment() {
     private fun initRecyclerView() {
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        mAdapter = MultiAdapter(Multi.mMultiDataList)
+        mAdapter = MultiAdapter(MultiUtil.mMultiDataList)
         viewBinding.recycler.layoutManager = layoutManager
         viewBinding.recycler.adapter = mAdapter
 
@@ -149,7 +152,7 @@ class MainFragment : BaseFragment() {
 
         mAdapter.setOnItemClick { position, binding, data ->
 
-            if (userState != StateBean.SUCCESS) {
+            if (userState != StateBean.SUCCESS && data.needLogin) {
                 showSnackWithLogin()
                 return@setOnItemClick
             }
@@ -172,7 +175,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun showSnackWithLogin() {
-        showSnack("请先登录","登录"){
+        showSnack("请先登录", "登录") {
             startFragmentWithData(
                 viewBinding.transformationLayout, viewBinding.userHeader.userName, "登录账号",
                 R.id.action_mainFragment_to_loginFragment
@@ -186,8 +189,8 @@ class MainFragment : BaseFragment() {
         title: String,
         id: Int
     ) {
-        transLayout.transitionName = KEYS.SHARE_LAYOUT
-        itemText.transitionName = KEYS.SHARE_TITLE
+        transLayout.transitionName = title + KEYS.SHARE_LAYOUT
+        itemText.transitionName = title + KEYS.SHARE_TITLE
 
         val bundle = transLayout.getBundle(KEYS.TRANS_PARAMS)
         bundle.putString(KEYS.TITLE, title)

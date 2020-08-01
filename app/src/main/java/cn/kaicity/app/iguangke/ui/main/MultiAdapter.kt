@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import cn.kaicity.app.iguangke.data.bean.MultiLayoutBean
+import cn.kaicity.app.iguangke.data.bean.MainLayoutBean
 import cn.kaicity.app.iguangke.databinding.ItemMainBigBinding
 import cn.kaicity.app.iguangke.databinding.ItemMainBinding
 
-class MultiAdapter(private val multiData: List<MultiLayoutBean>) :
+class MultiAdapter(private val multiData: List<MainLayoutBean>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var onItemClick: ((position: Int, binding: ViewBinding, data: MultiLayoutBean) -> Unit)? =
+    private var onItemClick: ((position: Int, binding: ViewBinding, data: MainLayoutBean) -> Unit)? =
         null
 
     companion object {
@@ -85,7 +85,7 @@ class MultiAdapter(private val multiData: List<MultiLayoutBean>) :
     }
 
 
-    fun setOnItemClick(function: (position: Int, binding: ViewBinding, data: MultiLayoutBean) -> Unit) {
+    fun setOnItemClick(function: (position: Int, binding: ViewBinding, data: MainLayoutBean) -> Unit) {
         this.onItemClick = function
 
     }

@@ -37,23 +37,34 @@ class FeatureRepository(private val api: FeatureApi) {
         scoreBean.scoreList.filter {
             it.term == term
         }.forEach {
-            it.scores.forEach {
-                scoreList.add(it)
-            }
+            scoreList.addAll(it.scores)
         }
+
 
         return ScoreWithTerm("$year${termMap[term]}", scoreList)
     }
 
-    suspend fun getMoney(mMoneyLiveData: MutableLiveData<StateBean<List<MoneyItem>>>,pageNum:Int) {
+    suspend fun getMoney(
+        mMoneyLiveData: MutableLiveData<StateBean<List<MoneyItem>>>,
+        pageNum: Int
+    ) {
 
-        val bean=api.getMoney(pageNum)
-        LogUtil.log(bean)
-        if(bean.result!="1"||bean.items.isEmpty()){
+        val bean = api.getMoney(pageNum)
+        if (bean.result != "1" || bean.items.isEmpty()) {
             mMoneyLiveData.postValue(StateBean(StateBean.EMPTY))
         }
 
-        mMoneyLiveData.postValue(StateBean(StateBean.SUCCESS,bean = bean.items))
+        mMoneyLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean.items))
+    }
+
+    suspend fun getNews(mNewsLiveData: MutableLiveData<StateBean<NewsListBean>>, pageNo: Int) {
+        val bean = api.getNews(pageNo)
+        if (bean.result != "1" || bean.items.isEmpty()) {
+            mNewsLiveData.postValue(StateBean(StateBean.EMPTY))
+        }
+        LogUtil.log(bean)
+
+        mNewsLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean))
     }
 
 }
