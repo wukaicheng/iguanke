@@ -3,6 +3,7 @@ package cn.kaicity.app.iguangke.ui.other
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionInflater
 import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
@@ -21,6 +22,14 @@ abstract class ChildFragment : BaseFragment() {
             findNavController().navigateUp()
         }
 
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater
+                .from(context)
+                .inflateTransition(android.R.transition.move)
     }
 
     abstract fun getHeaderViewBinding(): LayoutHeaderBinding
