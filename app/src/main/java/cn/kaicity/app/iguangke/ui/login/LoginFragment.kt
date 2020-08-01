@@ -34,10 +34,7 @@ class LoginFragment : ChildFragment() {
     }
 
     private fun initLoginButton() {
-
-
         viewBinding.loginButton.setOnClickListener {
-
 
             viewModel.login(
                 viewBinding.accountEdit.text.toString(),

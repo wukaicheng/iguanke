@@ -9,25 +9,9 @@
         android:id="@+id/header"
         layout="@layout/layout_header" />
 
-    <com.skydoves.transformationlayout.TransformationLayout
-        android:id="@+id/transformationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:transformation_duration="450">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
-
-            <include
-                android:id="@+id/user_header"
-                layout="@layout/layout_user_header" />
-        </com.google.android.material.card.MaterialCardView>
-
-    </com.skydoves.transformationlayout.TransformationLayout>
+    <include
+        android:id="@+id/user_header"
+        layout="@layout/layout_user_header" />
 
     <TextView
         android:layout_width="match_parent"

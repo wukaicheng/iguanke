@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -20,10 +21,9 @@ import cn.kaicity.app.iguangke.databinding.ItemMainBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
+import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.MultiUtil
 import cn.kaicity.app.iguangke.util.showSnack
-import com.skydoves.transformationlayout.TransformationLayout
-import com.skydoves.transformationlayout.onTransformationStartContainer
 
 
 class MainFragment : BaseFragment() {
@@ -45,13 +45,12 @@ class MainFragment : BaseFragment() {
         viewBinding = FragmentMainBinding.inflate(layoutInflater)
         initRecyclerView()
         initUserHeader()
+        viewModel.getUserBean()
         return viewBinding.root
     }
 
     override fun onStart() {
         super.onStart()
-        viewModel.getUserBean()
-
     }
 
     private fun initUserHeader() {
@@ -66,7 +65,7 @@ class MainFragment : BaseFragment() {
             when (userState) {
                 StateBean.FAIL -> {
                     startFragmentWithData(
-                        viewBinding.transformationLayout, viewBinding.userHeader.userName, "登录账号",
+                        viewBinding.userHeader.userName, "登录账号",
                         R.id.action_mainFragment_to_loginFragment
                     )
                 }
@@ -83,7 +82,6 @@ class MainFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProvider(this, InjectorUtil.getMainFactory()).get(MainViewModel::class.java)
-        onTransformationStartContainer()
     }
 
     private fun updateUserHeader(stateBean: StateBean<UserBean>) {
@@ -156,20 +154,19 @@ class MainFragment : BaseFragment() {
                 showSnackWithLogin()
                 return@setOnItemClick
             }
-            var transformationLayout: TransformationLayout? = null
             var itemText: TextView? = null
 
 
             //case
             if (mAdapter.getItemViewType(position) == MultiAdapter.ONE_ITEM) {
-                transformationLayout = (binding as ItemMainBigBinding).transformationLayout
+                (binding as ItemMainBigBinding)
                 itemText = binding.itemTitle
 
             } else if (mAdapter.getItemViewType(position) == MultiAdapter.TWO_ITEM) {
-                transformationLayout = (binding as ItemMainBinding).transformationLayout
+                (binding as ItemMainBinding)
                 itemText = binding.itemTitle
             }
-            startFragmentWithData(transformationLayout!!, itemText!!, data.title, data.fragmentId)
+            startFragmentWithData(itemText!!, data.title, data.fragmentId)
         }
 
     }
@@ -177,25 +174,20 @@ class MainFragment : BaseFragment() {
     private fun showSnackWithLogin() {
         showSnack("请先登录", "登录") {
             startFragmentWithData(
-                viewBinding.transformationLayout, viewBinding.userHeader.userName, "登录账号",
+                viewBinding.userHeader.userName, "登录账号",
                 R.id.action_mainFragment_to_loginFragment
             )
         }
     }
 
     private fun startFragmentWithData(
-        transLayout: TransformationLayout,
         itemText: TextView,
         title: String,
         id: Int
     ) {
-        transLayout.transitionName = title + KEYS.SHARE_LAYOUT
-        itemText.transitionName = title + KEYS.SHARE_TITLE
-
-        val bundle = transLayout.getBundle(KEYS.TRANS_PARAMS)
-        bundle.putString(KEYS.TITLE, title)
-        bundle.putParcelable(KEYS.TRANS_PARAMS, transLayout.getParams())
-        val extras = FragmentNavigatorExtras(itemText to KEYS.SHARE_TITLE)
+        itemText.transitionName = title
+        val extras = FragmentNavigatorExtras(itemText to title)
+        val bundle = bundleOf(Pair("title", title))
         findNavController().navigate(id, bundle, null, extras)
 
     }

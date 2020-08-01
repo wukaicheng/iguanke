@@ -75,9 +75,6 @@ dependencies {
     //圆形图片
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    //fragment 跳转动画
-    implementation "com.github.skydoves:transformationlayout:1.0.5"
-
     //edit box
     implementation 'com.github.HITGIF:TextFieldBoxes:1.4.5'
 

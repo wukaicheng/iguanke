@@ -1,55 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.skydoves.transformationlayout.TransformationLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/transformationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:transformation_duration="450"
-    app:transformation_pathMode="arc">
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="8dp">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
-            android:id="@+id/background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
 
-            <ImageView
-                android:id="@+id/item_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="@string/util"
-                android:src="@drawable/ic_arrow_right" />
+        <ImageView
+            android:id="@+id/item_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/util"
+            android:src="@drawable/ic_arrow_right" />
 
-            <TextView
-                android:id="@+id/item_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:lines="1"
-                android:text="@string/util"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lines="1"
+            android:text="@string/util"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/item_subTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:lines="1"
-                android:text="@string/util"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/item_subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:lines="1"
+            android:text="@string/util"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
-</com.skydoves.transformationlayout.TransformationLayout>
+</androidx.cardview.widget.CardView>

@@ -1,46 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="cn.kaicity.app.iguangke.ui.main.MainFragment"
-        android:label="MainFragment">
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+
         <action
             android:id="@+id/action_mainFragment_to_scoreFragment"
-            app:destination="@id/scoreFragment" />
+            app:destination="@id/scoreFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
         <action
+
             android:id="@+id/action_mainFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
         <action
+
             android:id="@+id/action_mainFragment_to_moneyFragment"
-            app:destination="@id/moneyFragment" />
+            app:destination="@id/moneyFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
         <action
             android:id="@+id/action_mainFragment_to_newsFragment"
-            app:destination="@id/newsFragment" />
+            app:destination="@id/newsFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
     </fragment>
 
     <fragment
         android:id="@+id/scoreFragment"
         android:name="cn.kaicity.app.iguangke.ui.feature.score.ScoreFragment"
-        android:label="ScoreFragment" >
-        <argument
-            android:name="title"
-            app:argType="string"
-            android:defaultValue="Title" />
-    </fragment>
+        android:label="ScoreFragment"
+        tools:layout="@layout/fragment_score" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="cn.kaicity.app.iguangke.ui.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/moneyFragment"
         android:name="cn.kaicity.app.iguangke.ui.feature.money.MoneyFragment"
-        android:label="MoneyFragment" />
+        android:label="MoneyFragment"
+        tools:layout="@layout/fragment_money" />
     <fragment
         android:id="@+id/newsFragment"
         android:name="cn.kaicity.app.iguangke.ui.feature.news.NewsFragment"
-        android:label="NewsFragment" />
+        android:label="NewsFragment"
+        tools:layout="@layout/fragment_newslist" />
 </navigation>
