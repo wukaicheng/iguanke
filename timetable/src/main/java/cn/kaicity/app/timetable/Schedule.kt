@@ -1,7 +1,5 @@
 package cn.kaicity.app.timetable
 
-import java.io.Serializable
-
 
 data class Schedule(
     var classTitle: String = "",

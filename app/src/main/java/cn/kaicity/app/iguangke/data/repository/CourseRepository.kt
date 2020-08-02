@@ -1,6 +1,7 @@
 package cn.kaicity.app.iguangke.data.repository
 
 import android.content.Context
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import cn.kaicity.app.iguangke.App
 import cn.kaicity.app.iguangke.data.KEYS
@@ -19,6 +20,16 @@ class CourseRepository(private val api: FeatureApi) {
 
     private val mEdit = mShared.edit()
 
+    private var colorIndex = 0
+
+    private val colorList = arrayOf(
+        Color.parseColor("#436BFE"),
+        Color.parseColor("#EB7630"),
+        Color.parseColor("#00C889"),
+        Color.parseColor("#E75852"),
+        Color.parseColor("#EAAD2E")
+    )
+
     suspend fun getCourse(
         mCourseLiveData: MutableLiveData<StateBean<List<ArrayList<Schedule>>>>
     ) {
@@ -26,7 +37,6 @@ class CourseRepository(private val api: FeatureApi) {
         if (startTime == null) {
             mCourseLiveData.postValue(StateBean(StateBean.FAIL, "初始化失败"))
         }
-
 
         val list = arrayListOf<ArrayList<Schedule>>()
 
@@ -48,8 +58,8 @@ class CourseRepository(private val api: FeatureApi) {
             mCourseLiveData.postValue(StateBean(StateBean.FAIL, "获取课表失败，请重试"))
         }
 
-        //延迟一秒，等界面加载完毕
-        Thread.sleep(1000)
+        //延迟半秒，等界面加载完毕
+        Thread.sleep(500)
         mCourseLiveData.postValue(StateBean(StateBean.SUCCESS, bean = list))
 
     }
@@ -73,10 +83,11 @@ class CourseRepository(private val api: FeatureApi) {
             list.add(
                 Schedule(
                     classTitle = course.kcmc,
+                    classPlace = course.jsmc,
                     day = course.xqj.toInt() - 1,
                     professorName = course.teacher_xm,
-                    startClass = classArray.first().toInt()-1,
-                    endClass = classArray.last().toInt()-1
+                    startClass = classArray.first().toInt() - 1,
+                    endClass = classArray.last().toInt() - 1
                 )
             )
 
@@ -118,8 +129,5 @@ class CourseRepository(private val api: FeatureApi) {
         }
     }
 
-    private fun getColor() {
-
-    }
 
 }

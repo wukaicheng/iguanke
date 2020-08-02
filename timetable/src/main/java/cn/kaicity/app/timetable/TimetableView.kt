@@ -38,7 +38,7 @@ constructor(
     private var columnCount = 0
     private var cellHeight = 0
     private var sideCellWidth = 0
-    private var mWidth = 0
+    private var colorIndex = 0
 
     private lateinit var headerTitle: Array<String>
     private lateinit var stickerColors: Array<String>
@@ -162,7 +162,7 @@ constructor(
             tv.layoutParams = param
             tv.setPadding(10, 0, 10, 0)
             tv.text =
-                schedule.classTitle + "\n" + schedule.classPlace + "\n" + schedule.professorName
+                schedule.classTitle + "\n" + schedule.professorName + "\n" + schedule.classPlace
             tv.setTextColor(Color.parseColor("#FFFFFF"))
             tv.setTextSize(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -251,7 +251,11 @@ constructor(
         i = 0
         while (i < size) {
             for (v in stickers[orders[i]]!!.view) {
-                v.setBackgroundColor(Color.parseColor(stickerColors[i % colorSize]))
+                v.setBackgroundColor(Color.parseColor(stickerColors[colorIndex]))
+                colorIndex++
+                if(colorIndex==stickerColors.size){
+                    colorIndex=0
+                }
             }
             i++
         }

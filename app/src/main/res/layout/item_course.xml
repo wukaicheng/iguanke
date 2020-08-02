@@ -12,6 +12,8 @@
         android:id="@+id/timetable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp" />
+        android:layout_margin="4dp"
+        app:header_title="@array/header_title"
+        app:sticker_colors="@array/sticker_color" />
 
 </com.google.android.material.card.MaterialCardView>
