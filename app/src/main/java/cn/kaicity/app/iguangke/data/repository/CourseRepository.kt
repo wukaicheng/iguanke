@@ -32,7 +32,6 @@ class CourseRepository(private val api: FeatureApi) {
 
         //每学期20周
         for (week in 1..20) {
-            LogUtil.log("第$week 周")
 
             var bean = getCourseByCache(week)
             if (bean == null) {
@@ -49,6 +48,8 @@ class CourseRepository(private val api: FeatureApi) {
             mCourseLiveData.postValue(StateBean(StateBean.FAIL, "获取课表失败，请重试"))
         }
 
+        //延迟一秒，等界面加载完毕
+        Thread.sleep(1000)
         mCourseLiveData.postValue(StateBean(StateBean.SUCCESS, bean = list))
 
     }
@@ -74,8 +75,8 @@ class CourseRepository(private val api: FeatureApi) {
                     classTitle = course.kcmc,
                     day = course.xqj.toInt() - 1,
                     professorName = course.teacher_xm,
-                    startClass = classArray.first().toInt(),
-                    endClass = classArray.last().toInt()
+                    startClass = classArray.first().toInt()-1,
+                    endClass = classArray.last().toInt()-1
                 )
             )
 
@@ -115,6 +116,10 @@ class CourseRepository(private val api: FeatureApi) {
             e.printStackTrace()
             startTime
         }
+    }
+
+    private fun getColor() {
+
     }
 
 }

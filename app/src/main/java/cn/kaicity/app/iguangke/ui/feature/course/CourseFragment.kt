@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.databinding.FragmentCourseBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
@@ -41,9 +42,10 @@ class CourseFragment : ChildFragment() {
     private fun initRecycler() {
         mAdapter = CourseAdapter()
         viewBinding.picker.adapter = mAdapter
+        viewBinding.stateView.showLoading()
         viewModel.getCourse()
         viewBinding.picker.addOnItemChangedListener { _, adapterPosition ->
-            viewBinding.weekNum.text="第${adapterPosition+1}周"
+            viewBinding.weekNum.text = "第${adapterPosition + 1}周"
         }
     }
 
@@ -55,13 +57,20 @@ class CourseFragment : ChildFragment() {
 
         viewModel.mCourseLiveData.observe(viewLifecycleOwner, Observer {
 
-            it.bean?.let { it1 ->
-                mAdapter.addData(it1)
-                viewBinding.picker.scrollToPosition(TimeUtil.getWeek())
+            when (it.status) {
+                StateBean.EMPTY -> viewBinding.stateView.showEmpty()
+
+                StateBean.FAIL -> viewBinding.stateView.showRetry()
+
+                StateBean.SUCCESS -> {
+                    viewBinding.stateView.showContent()
+                    mAdapter.replaceData(it.bean!!)
+                    viewBinding.picker.scrollToPosition(TimeUtil.getWeek())
+                }
+
             }
         })
     }
-
 
 
 }

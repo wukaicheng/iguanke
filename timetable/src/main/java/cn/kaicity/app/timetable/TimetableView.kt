@@ -344,14 +344,9 @@ constructor(
     }
 
     private fun calStickerTopPx(int: Int): Int {
-        log(int)
-        log(cellHeight)
         return int * cellHeight
     }
 
-    private fun log(int: Any) {
-        Log.d("timetable", int.toString())
-    }
 
     private fun createTableLayoutParam(): TableLayout.LayoutParams {
         return TableLayout.LayoutParams(
