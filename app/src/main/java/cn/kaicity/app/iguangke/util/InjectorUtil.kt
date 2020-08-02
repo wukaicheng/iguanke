@@ -1,10 +1,12 @@
 package cn.kaicity.app.iguangke.util
 
 import cn.kaicity.app.iguangke.data.network.GKRetrofitService
+import cn.kaicity.app.iguangke.data.repository.CourseRepository
 import cn.kaicity.app.iguangke.data.repository.FeatureRepository
 import cn.kaicity.app.iguangke.data.repository.LoginRepository
 import cn.kaicity.app.iguangke.data.repository.UserRepository
 import cn.kaicity.app.iguangke.ui.feature.FeatureFactory
+import cn.kaicity.app.iguangke.ui.feature.course.CourseFactory
 import cn.kaicity.app.iguangke.ui.login.LoginFactory
 import cn.kaicity.app.iguangke.ui.login.LoginViewModel
 import cn.kaicity.app.iguangke.ui.main.MainFactory
@@ -16,6 +18,9 @@ object InjectorUtil {
 
     private fun getUserRepository(): UserRepository = UserRepository(GKRetrofitService.loginApi)
 
+    private fun getCourseRepository(): CourseRepository =
+        CourseRepository(GKRetrofitService.featureApi)
+
     private fun getFeatureRepository(): FeatureRepository =
         FeatureRepository(GKRetrofitService.featureApi)
 
@@ -26,4 +31,6 @@ object InjectorUtil {
     fun getUserFactory(): UserFactory = UserFactory(getUserRepository())
 
     fun getFeatureFactory(): FeatureFactory = FeatureFactory(getFeatureRepository())
+
+    fun getCourseFactory(): CourseFactory = CourseFactory(getCourseRepository())
 }

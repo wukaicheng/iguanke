@@ -41,6 +41,13 @@
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_courseFragment"
+            app:destination="@id/courseFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
     </fragment>
 
@@ -76,6 +83,13 @@
 
     <fragment
         android:id="@+id/newDetailFragment"
+        tools:layout="@layout/fragment_news_detail"
         android:name="cn.kaicity.app.iguangke.ui.feature.news.NewDetailFragment"
         android:label="NewDetailFragment" />
+
+    <fragment
+        android:id="@+id/courseFragment"
+        tools:layout="@layout/fragment_course"
+        android:name="cn.kaicity.app.iguangke.ui.feature.course.CourseFragment"
+        android:label="CourseFragment" />
 </navigation>

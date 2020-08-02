@@ -26,7 +26,7 @@ class MultiUtil {
                     color = App.context.getColor(R.color.fuel_yellow)
                 )
                 ,
-                        MainLayoutBean(
+                MainLayoutBean(
                     R.id.action_mainFragment_to_scoreFragment,
                     "成绩查询",
                     "期末考试成绩",
@@ -36,7 +36,7 @@ class MultiUtil {
                     color = App.context.getColor(R.color.royal_blue)
                 ),
                 MainLayoutBean(
-                    0,
+                    R.id.action_mainFragment_to_courseFragment,
                     "课表查看",
                     "本学期课程表",
                     R.drawable.ic_class,

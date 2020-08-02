@@ -3,6 +3,7 @@ package cn.kaicity.app.iguangke.data.network.api
 import cn.kaicity.app.iguangke.data.bean.*
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface FeatureApi {
@@ -27,10 +28,20 @@ interface FeatureApi {
         @Field("pageSize") size: Int = 10,
         @Field("typeId") id: Int = 144
     ): NewsListBean
+
     @POST("information/getInformation.do")
     @FormUrlEncoded
     suspend fun getNewsDetail(
         @Field("informationId") pageNo: Int
     ): NewsBean
+
+
+    @GET("settings/get.do")
+    suspend fun getSetting(): SettingBean
+
+    @POST("course/listCourse.do")
+    @FormUrlEncoded
+    suspend fun getCourse(@Field("week") week: Int): CourseBean
+
 
 }
