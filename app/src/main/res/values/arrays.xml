@@ -9,9 +9,12 @@
         <item>周四</item>
         <item>周五</item>
     </string-array>
+
     <string-array name="sticker_color" >
         <item name="royal_blue">#436BFE</item>
         <item name="tango">#EB7630</item>
+        <item name="dodger_blue">#29A2FF</item>
+        <item name="scooter">#33BED1</item>
         <item name="caribbean_green">#00C889</item>
         <item name="roman">#E75852</item>
         <item name="fuel_yellow">#EAAD2E</item>

@@ -74,9 +74,9 @@ class LoginFragment : ChildFragment() {
     private fun loginSuccess(bean: UserBean) {
         viewBinding.loginButton.complete()
         showSnack("登录成功，正在返回")
-
         val mUserViewModel=ViewModelProvider(getMainActivity(),InjectorUtil.getUserFactory()).get(UserViewModel::class.java)
         mUserViewModel.save(bean)
+        mUserViewModel.clearCourse()
         mUserViewModel.mUserLiveData.postValue(bean)
         findNavController().navigateUp()
     }

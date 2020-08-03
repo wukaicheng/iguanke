@@ -12,16 +12,12 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.kaicity.app.iguangke.R
-import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentMainBinding
-import cn.kaicity.app.iguangke.databinding.ItemMainBigBinding
-import cn.kaicity.app.iguangke.databinding.ItemMainBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
-import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.MultiUtil
 import cn.kaicity.app.iguangke.util.showSnack
 
@@ -32,7 +28,7 @@ class MainFragment : BaseFragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var mAdapter: MultiAdapter
+    private lateinit var mAdapter: MainAdapter
 
     private var userState = StateBean.FAIL
 
@@ -47,10 +43,6 @@ class MainFragment : BaseFragment() {
         initUserHeader()
         viewModel.getUserBean()
         return viewBinding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     private fun initUserHeader() {
@@ -100,7 +92,6 @@ class MainFragment : BaseFragment() {
 
             }
 
-
             StateBean.TIMEOUT -> {
                 userState = StateBean.FAIL
                 showSnack("登录状态过期，请重新登录")
@@ -133,40 +124,30 @@ class MainFragment : BaseFragment() {
     private fun initRecyclerView() {
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        mAdapter = MultiAdapter(MultiUtil.mMultiDataList)
+        mAdapter = MainAdapter()
         viewBinding.recycler.layoutManager = layoutManager
         viewBinding.recycler.adapter = mAdapter
+        mAdapter.addData(MultiUtil.mMultiDataList)
 
         //动态设置item大小
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (mAdapter.getItemViewType(position)) {
-                    MultiAdapter.ONE_ITEM -> 2
-                    MultiAdapter.TWO_ITEM -> 1
+                    MainAdapter.LONG_ITEM -> 2
+                    MainAdapter.SHORT_ITEM -> 1
                     else -> 0
                 }
             }
         }
 
-        mAdapter.setOnItemClick { position, binding, data ->
+        mAdapter.setOnItemClick { _, binding, data ->
 
             if (userState != StateBean.SUCCESS && data.needLogin) {
                 showSnackWithLogin()
                 return@setOnItemClick
             }
-            var itemText: TextView? = null
 
-
-            //case
-            if (mAdapter.getItemViewType(position) == MultiAdapter.ONE_ITEM) {
-                (binding as ItemMainBigBinding)
-                itemText = binding.itemTitle
-
-            } else if (mAdapter.getItemViewType(position) == MultiAdapter.TWO_ITEM) {
-                (binding as ItemMainBinding)
-                itemText = binding.itemTitle
-            }
-            startFragmentWithData(itemText!!, data.title, data.fragmentId)
+            startFragmentWithData(binding.itemTitle, data.title, data.fragmentId)
         }
 
     }

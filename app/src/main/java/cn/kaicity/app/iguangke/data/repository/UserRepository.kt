@@ -1,6 +1,7 @@
 package cn.kaicity.app.iguangke.data.repository
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import cn.kaicity.app.iguangke.App
 import cn.kaicity.app.iguangke.data.KEYS
@@ -10,6 +11,7 @@ import cn.kaicity.app.iguangke.data.network.NetWorkCreator
 import cn.kaicity.app.iguangke.data.network.api.LoginApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+
 
 class UserRepository(private val service: LoginApi) {
 
@@ -62,5 +64,15 @@ class UserRepository(private val service: LoginApi) {
         NetWorkCreator.token = userBean.token
         NetWorkCreator.userId = userBean.userId
     }
+
+    fun clear() {
+
+        val shared: SharedPreferences =
+            App.context.getSharedPreferences(KEYS.COURSE, Context.MODE_PRIVATE)
+        val editor = shared.edit()
+        editor.clear()
+        editor.apply()
+    }
+
 
 }

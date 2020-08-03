@@ -15,4 +15,8 @@ class UserViewModel(
         mRepo.saveUser(bean)
     }
 
+    fun clearCourse() {
+        mRepo.clear()
+    }
+
 }

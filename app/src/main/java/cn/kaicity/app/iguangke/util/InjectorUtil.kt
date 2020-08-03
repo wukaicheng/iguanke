@@ -7,6 +7,7 @@ import cn.kaicity.app.iguangke.data.repository.LoginRepository
 import cn.kaicity.app.iguangke.data.repository.UserRepository
 import cn.kaicity.app.iguangke.ui.feature.FeatureFactory
 import cn.kaicity.app.iguangke.ui.feature.course.CourseFactory
+import cn.kaicity.app.iguangke.ui.feature.news.NewsFactory
 import cn.kaicity.app.iguangke.ui.login.LoginFactory
 import cn.kaicity.app.iguangke.ui.login.LoginViewModel
 import cn.kaicity.app.iguangke.ui.main.MainFactory
@@ -31,6 +32,8 @@ object InjectorUtil {
     fun getUserFactory(): UserFactory = UserFactory(getUserRepository())
 
     fun getFeatureFactory(): FeatureFactory = FeatureFactory(getFeatureRepository())
+
+    fun getNewsRFactory(): NewsFactory = NewsFactory(getFeatureRepository())
 
     fun getCourseFactory(): CourseFactory = CourseFactory(getCourseRepository())
 }

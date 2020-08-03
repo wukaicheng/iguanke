@@ -11,9 +11,7 @@ class FeatureViewModel(private val mRepo: FeatureRepository) : BaseViewModel() {
 
     val mMoneyLiveData = MutableLiveData<StateBean<List<MoneyItem>>>()
 
-    val mNewsLiveData  =MutableLiveData<StateBean<NewsListBean>>()
 
-    val mNewsDetailLiveData = MutableLiveData<StateBean<NewDetailItem>>()
 
     fun getScore() {
         launchOnUI {
@@ -28,15 +26,5 @@ class FeatureViewModel(private val mRepo: FeatureRepository) : BaseViewModel() {
         }
     }
 
-    fun getNews(pageNo: Int){
-        launchOnUI {
-            mRepo.getNews(mNewsLiveData,pageNo)
-        }
-    }
 
-    fun getNewsDetail(id:Int){
-        launchOnUI {
-         mRepo.getNewsDetail(mNewsDetailLiveData,id)
-        }
-    }
 }

@@ -12,20 +12,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.kaicity.app.iguangke.R
 import cn.kaicity.app.iguangke.data.KEYS
+import cn.kaicity.app.iguangke.data.bean.NewsItem
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.databinding.FragmentNewslistBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
-import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.util.InjectorUtil
+import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.showSnack
-import kotlinx.android.synthetic.main.item_news.*
 
 class NewsFragment : ChildFragment() {
 
     private lateinit var viewBinding: FragmentNewslistBinding
 
-    private lateinit var viewModel: FeatureViewModel
+    private lateinit var viewModel: NewsViewModel
 
     private lateinit var mAdapter: NewsListAdapter
 
@@ -39,8 +39,8 @@ class NewsFragment : ChildFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentNewslistBinding.inflate(inflater)
-        viewModel = ViewModelProvider(getMainActivity(), InjectorUtil.getFeatureFactory()).get(
-            FeatureViewModel::class.java
+        viewModel = ViewModelProvider(getMainActivity(), InjectorUtil.getNewsRFactory()).get(
+            NewsViewModel::class.java
         )
         initRecycler()
         return viewBinding.root
@@ -105,8 +105,11 @@ class NewsFragment : ChildFragment() {
                 }
 
                 StateBean.SUCCESS -> {
+                    val mList=viewModel.mNewsListLiveData.value
+
                     it.bean?.run {
                         if (isLoadMore) {
+                            viewModel.mNewsListLiveData.value?.addAll(this.items)
                             mAdapter.addData(this.items)
                             viewBinding.refreshLayout.finishLoadMore()
                             if (this.items.size < 10) {
@@ -114,14 +117,23 @@ class NewsFragment : ChildFragment() {
                             }
 
                         } else {
-                            viewBinding.stateView.showContent()
-                            mAdapter.replaceData(this.items)
+
+                            if(viewModel.mNewsListLiveData.value==null){
+                                viewBinding.stateView.showContent()
+                                val list = ArrayList<NewsItem>()
+                                list.addAll(this.items)
+                                viewModel.mNewsListLiveData.value = list
+                            }
 
                         }
                     }
                 }
-
             }
+        })
+
+
+        viewModel.mNewsListLiveData.observe(this, Observer {
+            mAdapter.replaceData(it)
         })
     }
 }

@@ -79,9 +79,8 @@ class FeatureRepository(private val api: FeatureApi) {
             mMoneyLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean.items))
 
         } catch (e: Exception) {
-
-            e.printStackTrace()
             LogUtil.log(e)
+            e.printStackTrace()
             mMoneyLiveData.postValue(StateBean(StateBean.FAIL, msg = "${e.message}"))
         }
 
@@ -96,6 +95,7 @@ class FeatureRepository(private val api: FeatureApi) {
             }
 
             mNewsLiveData.postValue(StateBean(StateBean.SUCCESS, bean = bean))
+
         } catch (e: Exception) {
             e.printStackTrace()
             LogUtil.log(e)
@@ -116,7 +116,6 @@ class FeatureRepository(private val api: FeatureApi) {
             mNewsDetailLiveData.postValue(StateBean(StateBean.SUCCESS, bean=bean.item))
         } catch (e: Exception) {
             e.printStackTrace()
-            LogUtil.log(e)
             mNewsDetailLiveData.postValue(StateBean(StateBean.FAIL, msg = "${e.message}"))
         }
     }

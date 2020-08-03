@@ -30,7 +30,7 @@ class NewDetailFragment : BaseFragment() {
 
     private lateinit var viewBinding: FragmentNewsDetailBinding
 
-    private lateinit var viewModel: FeatureViewModel
+    private lateinit var viewModel: NewsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +38,8 @@ class NewDetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentNewsDetailBinding.inflate(inflater)
-        viewModel = ViewModelProvider(getMainActivity(), InjectorUtil.getFeatureFactory()).get(
-            FeatureViewModel::class.java
+        viewModel = ViewModelProvider(getMainActivity(), InjectorUtil.getNewsRFactory()).get(
+            NewsViewModel::class.java
         )
         return viewBinding.root
     }

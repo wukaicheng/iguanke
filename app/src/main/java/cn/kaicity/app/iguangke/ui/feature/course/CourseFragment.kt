@@ -11,10 +11,8 @@ import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.databinding.FragmentCourseBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
-import cn.kaicity.app.iguangke.util.InjectorUtil
-import cn.kaicity.app.iguangke.util.LogUtil
-import cn.kaicity.app.iguangke.util.TimeUtil
-import cn.kaicity.app.iguangke.util.showSnack
+import cn.kaicity.app.iguangke.util.*
+import java.lang.StringBuilder
 
 class CourseFragment : ChildFragment() {
 
@@ -47,6 +45,20 @@ class CourseFragment : ChildFragment() {
         viewBinding.picker.addOnItemChangedListener { _, adapterPosition ->
             viewBinding.weekNum.text = "第${adapterPosition + 1}周"
         }
+
+        mAdapter.setOnStickerSelectEventListener {
+            val sb = StringBuilder()
+                .append("课程名称：")
+                .append(it.classTitle)
+                .append("\n")
+                .append("教师名称：")
+                .append(it.professorName)
+                .append("\n")
+                .append("上课地点：")
+                .append(it.classPlace)
+            showMessageDialog("课程详情", sb.toString())
+        }
+
     }
 
     override fun getHeaderViewBinding(): LayoutHeaderBinding {
@@ -63,9 +75,9 @@ class CourseFragment : ChildFragment() {
                 StateBean.FAIL -> viewBinding.stateView.showRetry()
 
                 StateBean.SUCCESS -> {
-                    viewBinding.stateView.showContent()
                     mAdapter.replaceData(it.bean!!)
                     viewBinding.picker.scrollToPosition(TimeUtil.getWeek())
+                    viewBinding.stateView.showContent()
                 }
 
             }

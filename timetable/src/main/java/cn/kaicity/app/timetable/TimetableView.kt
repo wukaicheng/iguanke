@@ -16,9 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.core.view.GravityCompat
-import androidx.core.view.marginEnd
-import androidx.core.view.marginRight
-import androidx.core.view.marginStart
 import java.util.*
 
 
@@ -38,6 +35,9 @@ constructor(
     private var columnCount = 0
     private var cellHeight = 0
     private var sideCellWidth = 0
+
+    private val colorMap = mutableMapOf<CharSequence, Int>()
+
     private var colorIndex = 0
 
     private lateinit var headerTitle: Array<String>
@@ -51,8 +51,9 @@ constructor(
     private var tableBox: TableLayout? = null
     private var stickers: HashMap<Int, Sticker> = HashMap()
     private var stickerCount = -1
-    private var stickerSelectedListener: OnStickerSelectedListener? =
+    private var stickerSelectedListener: ((schedule: Schedule) -> Unit)? =
         null
+
     private var highlightMode: HighlightMode = HighlightMode.COLOR
     private var headerHighlightImageSize = 0
     private var headerHighlightImage: Drawable? = null
@@ -114,7 +115,7 @@ constructor(
         createTable()
     }
 
-    fun setOnStickerSelectEventListener(listener: OnStickerSelectedListener?) {
+    fun setOnStickerSelectEventListener(listener: ( schedules:Schedule) -> Unit) {
         stickerSelectedListener = listener
     }
 
@@ -163,83 +164,25 @@ constructor(
             tv.setPadding(10, 0, 10, 0)
             tv.text =
                 schedule.classTitle + "\n" + schedule.professorName + "\n" + schedule.classPlace
-            tv.setTextColor(Color.parseColor("#FFFFFF"))
+            tv.setTextColor(Color.WHITE)
             tv.setTextSize(
                 TypedValue.COMPLEX_UNIT_DIP,
                 DEFAULT_STICKER_FONT_SIZE_DP.toFloat()
             )
             tv.setTypeface(null, Typeface.BOLD)
             tv.setOnClickListener {
-                if (stickerSelectedListener != null) stickerSelectedListener!!.OnStickerSelected(
-                    count,
-                    schedules
-                )
+                if (stickerSelectedListener != null)
+                    stickerSelectedListener!!(schedule)
             }
             sticker.addTextView(tv)
             sticker.addSchedule(schedule)
             stickers[count] = sticker
             stickerBox!!.addView(tv)
         }
-        setStickerColor()
+        setStickerColor(schedules)
     }
 
-
-    private fun removeAll() {
-        for (key in stickers.keys) {
-            val sticker: Sticker? = stickers[key]
-            for (tv in sticker!!.view) {
-                stickerBox!!.removeView(tv)
-            }
-        }
-        stickers.clear()
-    }
-
-    fun edit(idx: Int, schedules: ArrayList<Schedule>) {
-        remove(idx)
-        add(schedules, idx)
-    }
-
-    fun remove(idx: Int) {
-        val sticker: Sticker? = stickers[idx]
-        for (tv in sticker!!.view) {
-            stickerBox!!.removeView(tv)
-        }
-        stickers.remove(idx)
-        setStickerColor()
-    }
-
-    fun setHeaderHighlight(idx: Int) {
-        if (idx < 0) return
-        val row = tableHeader!!.getChildAt(0) as TableRow
-        val element = row.getChildAt(idx)
-        if (highlightMode === HighlightMode.COLOR) {
-            val tx = element as TextView
-            tx.setTextColor(Color.parseColor("#FFFFFF"))
-            tx.setBackgroundColor(headerHighlightColor)
-            tx.setTypeface(null, Typeface.BOLD)
-            tx.setTextSize(
-                TypedValue.COMPLEX_UNIT_DIP,
-                DEFAULT_HEADER_HIGHLIGHT_FONT_SIZE_DP.toFloat()
-            )
-        } else if (highlightMode === HighlightMode.IMAGE) {
-            val outer = RelativeLayout(context)
-            outer.layoutParams = createTableRowParam(cellHeight)
-            val iv = ImageView(context)
-            val params =
-                RelativeLayout.LayoutParams(headerHighlightImageSize, headerHighlightImageSize)
-            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
-            iv.layoutParams = params
-            iv.scaleType = ImageView.ScaleType.CENTER_CROP
-            row.removeViewAt(idx)
-            outer.addView(iv)
-            row.addView(outer, idx)
-            if (headerHighlightImage != null) {
-                iv.setImageDrawable(headerHighlightImage)
-            }
-        }
-    }
-
-    private fun setStickerColor() {
+    private fun setStickerColor(schedules: ArrayList<Schedule>) {
         val size = stickers.size
         val orders = IntArray(size)
         var i = 0
@@ -247,17 +190,23 @@ constructor(
             orders[i++] = key
         }
         Arrays.sort(orders)
+
         val colorSize = stickerColors.size
         i = 0
         while (i < size) {
-            for (v in stickers[orders[i]]!!.view) {
-                v.setBackgroundColor(Color.parseColor(stickerColors[colorIndex]))
-                colorIndex++
-                if(colorIndex==stickerColors.size){
-                    colorIndex=0
+            for ((index, v) in stickers[orders[i]]!!.view.withIndex()) {
+                val key = schedules[index].classTitle;
+                if (!colorMap.containsKey(key)) {
+                    colorMap[key] = Color.parseColor(stickerColors[colorIndex])
+                    colorIndex++
+                    if (colorIndex == stickerColors.size) {
+                        colorIndex = 0
+                    }
                 }
+
+                v.setBackgroundColor(colorMap[key]!!)
+                i++
             }
-            i++
         }
     }
 
@@ -368,7 +317,6 @@ constructor(
     }
 
 
-
     private fun onCreateByBuilder(builder: Builder) {
         rowCount = builder.rowCount
         columnCount = builder.columnCount
@@ -381,12 +329,12 @@ constructor(
         init()
     }
 
-    interface OnStickerSelectedListener {
-        fun OnStickerSelected(
-            idx: Int,
-            schedules: ArrayList<Schedule>
-        )
-    }
+//    interface OnStickerSelectedListener {
+//        fun OnStickerSelected(
+//            idx: Int,
+//            schedules: ArrayList<Schedule>
+//        )
+//    }
 
     internal class Builder(private val context: Context) {
         var rowCount: Int
