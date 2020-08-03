@@ -3,17 +3,23 @@ package cn.kaicity.app.iguangke.data.repository
 import android.content.Context
 import android.content.SharedPreferences
 import cn.kaicity.app.iguangke.App
+import cn.kaicity.app.iguangke.BuildConfig
 import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
+import cn.kaicity.app.iguangke.data.bean.VersionBean
 import cn.kaicity.app.iguangke.data.network.NetWorkCreator
+import cn.kaicity.app.iguangke.data.network.api.FeatureApi
 import cn.kaicity.app.iguangke.data.network.api.LoginApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kunminx.architecture.ui.callback.UnPeekLiveData
 
 
-class UserRepository(private val service: LoginApi) {
+class UserRepository(
+    private val service: LoginApi,
+    private val featureApi: FeatureApi
+) {
 
     val sp: SharedPreferences = App.context.getSharedPreferences(KEYS.USER, Context.MODE_PRIVATE)
 
@@ -68,11 +74,19 @@ class UserRepository(private val service: LoginApi) {
 
 
     fun clearCourse() {
-         val shared: SharedPreferences =
+        val shared: SharedPreferences =
             App.context.getSharedPreferences(KEYS.COURSE, Context.MODE_PRIVATE)
         val editor = shared.edit()
         editor.clear()
         editor.apply()
+    }
+
+    suspend fun checkUpdate(mUpdateLiveData: UnPeekLiveData<VersionBean>) {
+        val bean = featureApi.checkUpdate()
+        if (bean.version > BuildConfig.VERSION_CODE) {
+            mUpdateLiveData.postValue(bean)
+        }
+
     }
 
 

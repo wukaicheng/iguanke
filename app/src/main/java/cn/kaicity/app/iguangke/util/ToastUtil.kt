@@ -23,7 +23,7 @@ fun Fragment.showMessageDialog(title: String,msg: String ) {
 }
 
 
-fun Fragment.showMessageDialog(title: String,msg: String,postClick:(dialog:DialogInterface,width:Int)->Unit ) {
+fun Fragment.showMessageDialog(title: String,msg: String,postClick:(dialog:DialogInterface,width:Int)->Unit) {
     AlertDialog.Builder(this.requireContext())
         .setTitle(title).setMessage(msg)
         .setNegativeButton("取消",null)

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +20,9 @@ import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.MultiUtil
+import cn.kaicity.app.iguangke.util.showMessageDialog
 import cn.kaicity.app.iguangke.util.showSnack
+import cn.kaicity.app.superdownload.util.UpdateUtil
 
 
 class MainFragment : BaseFragment() {
@@ -74,6 +77,7 @@ class MainFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProvider(this, InjectorUtil.getMainFactory()).get(MainViewModel::class.java)
+        viewModel.checkUpdate()
     }
 
     private fun updateUserHeader(stateBean: StateBean<UserBean>) {
@@ -120,6 +124,10 @@ class MainFragment : BaseFragment() {
             updateUserHeader(it)
         })
 
+
+        viewModel.mUpdateLiveData.observe(this, Observer {
+            UpdateUtil(it).start(requireContext())
+        })
 
     }
 

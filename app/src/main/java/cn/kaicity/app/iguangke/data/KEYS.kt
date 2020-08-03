@@ -3,6 +3,8 @@ package cn.kaicity.app.iguangke.data
 class KEYS {
     companion object {
 
+        const val IGNORE_VERSION="ignore_version"
+        const val SETTING ="setting"
         const val SHARE_IMAGE = "image"
         const val TITLE = "title"
         const val POSITION = "position"

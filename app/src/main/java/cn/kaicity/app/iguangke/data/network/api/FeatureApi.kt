@@ -1,10 +1,7 @@
 package cn.kaicity.app.iguangke.data.network.api
 
 import cn.kaicity.app.iguangke.data.bean.*
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface FeatureApi {
 
@@ -44,4 +41,6 @@ interface FeatureApi {
     suspend fun getCourse(@Field("week") week: Int): CourseBean
 
 
+    @GET
+    suspend fun checkUpdate(@Url url: String = "https://gitee.com/kaicity/iguanke/raw/master/version.json"): VersionBean
 }
