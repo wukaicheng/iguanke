@@ -43,6 +43,7 @@ class ScoreFragment : ChildFragment() {
     }
 
     private fun initRecyclerView() {
+
         viewBinding.stateView.onRetryClickListener = object : StateView.OnRetryClickListener {
             override fun onRetryClick() {
                 getScore()

@@ -15,6 +15,7 @@ import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.showSnack
+import com.github.nukc.stateview.StateView
 
 class MoneyFragment : ChildFragment() {
 
@@ -49,6 +50,10 @@ class MoneyFragment : ChildFragment() {
         viewBinding.recycler.layoutManager = LinearLayoutManager(requireContext())
         viewBinding.recycler.adapter = mAdapter
         viewBinding.refreshLayout.setEnableRefresh(false)
+
+        viewBinding.refreshLayout.setEnableAutoLoadMore(false)
+        //接口目前不支持加载更多
+
         viewBinding.refreshLayout.setOnLoadMoreListener {
             isLoadMore = true
             pageNo++
@@ -56,6 +61,12 @@ class MoneyFragment : ChildFragment() {
         }
         viewBinding.stateView.showLoading()
         mFeatureViewModel.getMoney(pageNo)
+
+        viewBinding.stateView.onRetryClickListener = object : StateView.OnRetryClickListener {
+            override fun onRetryClick() {
+                mFeatureViewModel.getMoney(pageNo)
+            }
+        }
     }
 
     override fun getHeaderViewBinding(): LayoutHeaderBinding {

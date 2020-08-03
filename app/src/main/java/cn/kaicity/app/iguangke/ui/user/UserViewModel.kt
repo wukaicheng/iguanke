@@ -16,7 +16,11 @@ class UserViewModel(
     }
 
     fun clearCourse() {
-        mRepo.clear()
+        mRepo.clearCourse()
+    }
+
+    fun loginOut(){
+
     }
 
 }

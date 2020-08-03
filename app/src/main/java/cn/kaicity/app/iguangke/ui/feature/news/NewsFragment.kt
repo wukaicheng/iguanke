@@ -20,6 +20,7 @@ import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.util.InjectorUtil
 import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.showSnack
+import com.github.nukc.stateview.StateView
 
 class NewsFragment : ChildFragment() {
 
@@ -74,7 +75,14 @@ class NewsFragment : ChildFragment() {
                 extras
             )
         }
+        viewBinding.stateView.showLoading()
         viewModel.getNews(pageNo)
+
+        viewBinding.stateView.onRetryClickListener = object : StateView.OnRetryClickListener {
+            override fun onRetryClick() {
+                viewModel.getNews(pageNo)
+            }
+        }
     }
 
     override fun getHeaderViewBinding(): LayoutHeaderBinding {
@@ -105,7 +113,6 @@ class NewsFragment : ChildFragment() {
                 }
 
                 StateBean.SUCCESS -> {
-                    val mList=viewModel.mNewsListLiveData.value
 
                     it.bean?.run {
                         if (isLoadMore) {
@@ -118,7 +125,7 @@ class NewsFragment : ChildFragment() {
 
                         } else {
 
-                            if(viewModel.mNewsListLiveData.value==null){
+                            if (viewModel.mNewsListLiveData.value == null) {
                                 viewBinding.stateView.showContent()
                                 val list = ArrayList<NewsItem>()
                                 list.addAll(this.items)
@@ -130,7 +137,6 @@ class NewsFragment : ChildFragment() {
                 }
             }
         })
-
 
         viewModel.mNewsListLiveData.observe(this, Observer {
             mAdapter.replaceData(it)

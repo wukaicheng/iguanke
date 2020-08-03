@@ -42,6 +42,14 @@ class MultiUtil {
                     true,
                     false,
                     color = App.context.getColor(R.color.fuel_yellow)
+                ), MainLayoutBean(
+                    R.id.action_mainFragment_to_aboutFragment,
+                    "关于软件",
+                    "软件简介及说明",
+                    R.drawable.ic_about,
+                    true,
+                    false,
+                    color = App.context.getColor(R.color.scooter)
                 )
 
             )

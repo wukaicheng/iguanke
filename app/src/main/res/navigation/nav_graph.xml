@@ -48,6 +48,13 @@
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right" />
+        <action
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
+            android:id="@+id/action_mainFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
 
     </fragment>
 
@@ -92,4 +99,8 @@
         tools:layout="@layout/fragment_course"
         android:name="cn.kaicity.app.iguangke.ui.feature.course.CourseFragment"
         android:label="CourseFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="cn.kaicity.app.iguangke.ui.other.AboutFragment"
+        android:label="AboutFragment" />
 </navigation>

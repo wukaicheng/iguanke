@@ -119,6 +119,8 @@ class MainFragment : BaseFragment() {
         viewModel.mUserLiveData.observe(viewLifecycleOwner, Observer {
             updateUserHeader(it)
         })
+
+
     }
 
     private fun initRecyclerView() {

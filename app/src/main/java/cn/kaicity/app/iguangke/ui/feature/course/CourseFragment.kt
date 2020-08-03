@@ -12,6 +12,7 @@ import cn.kaicity.app.iguangke.databinding.FragmentCourseBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.util.*
+import com.github.nukc.stateview.StateView
 import java.lang.StringBuilder
 
 class CourseFragment : ChildFragment() {
@@ -59,6 +60,12 @@ class CourseFragment : ChildFragment() {
             showMessageDialog("课程详情", sb.toString())
         }
 
+
+        viewBinding.stateView.onRetryClickListener=object : StateView.OnRetryClickListener {
+            override fun onRetryClick() {
+                viewModel.getCourse()
+            }
+        }
     }
 
     override fun getHeaderViewBinding(): LayoutHeaderBinding {
@@ -67,12 +74,15 @@ class CourseFragment : ChildFragment() {
 
     override fun observeLiveData() {
 
-        viewModel.mCourseLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.mCourseLiveData.observe(this, Observer {
 
             when (it.status) {
                 StateBean.EMPTY -> viewBinding.stateView.showEmpty()
 
-                StateBean.FAIL -> viewBinding.stateView.showRetry()
+                StateBean.FAIL -> {
+                    showSnack(it.msg)
+                    viewBinding.stateView.showRetry()
+                }
 
                 StateBean.SUCCESS -> {
                     mAdapter.replaceData(it.bean!!)

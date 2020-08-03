@@ -21,7 +21,7 @@ class MoneyAdapter : BaseAdapter<ItemMoneyBinding, MoneyItem>() {
         binding.good.text = data.transactionTitle
         binding.payTime.text = data.transactionDate
 
-        var startText = ""
+        val startText: String
         val color = if (data.transactionCode == "1") {
             startText = "-"
             App.context.getColor(R.color.roman)

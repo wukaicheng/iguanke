@@ -22,6 +22,7 @@ import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.TimeUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.github.nukc.stateview.StateView
 import com.google.android.material.appbar.AppBarLayout
 import java.io.File
 
@@ -54,7 +55,16 @@ class NewDetailFragment : BaseFragment() {
         id?.run {
             viewBinding.stateView.showLoading()
             viewModel.getNewsDetail(id)
+
+            viewBinding.stateView.onRetryClickListener=object : StateView.OnRetryClickListener {
+                override fun onRetryClick() {
+                    viewModel.getNewsDetail(id)
+                }
+            }
+
         }
+
+
     }
 
     private fun initImage(url: String?) {

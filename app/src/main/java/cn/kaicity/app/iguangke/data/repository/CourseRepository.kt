@@ -20,22 +20,13 @@ class CourseRepository(private val api: FeatureApi) {
 
     private val mEdit = mShared.edit()
 
-    private var colorIndex = 0
-
-    private val colorList = arrayOf(
-        Color.parseColor("#436BFE"),
-        Color.parseColor("#EB7630"),
-        Color.parseColor("#00C889"),
-        Color.parseColor("#E75852"),
-        Color.parseColor("#EAAD2E")
-    )
-
     suspend fun getCourse(
         mCourseLiveData: MutableLiveData<StateBean<List<ArrayList<Schedule>>>>
     ) {
         val startTime = getStartTime()
         if (startTime == null) {
             mCourseLiveData.postValue(StateBean(StateBean.FAIL, "初始化失败"))
+            return
         }
 
         val list = arrayListOf<ArrayList<Schedule>>()
@@ -63,6 +54,27 @@ class CourseRepository(private val api: FeatureApi) {
         mCourseLiveData.postValue(StateBean(StateBean.SUCCESS, bean = list))
 
     }
+
+
+    private fun getCourseByCache(week: Int): CourseBean? {
+
+        val courseData = mShared.getString(KEYS.WEEK + week, null) ?: return null
+        val type = object : TypeToken<CourseBean>() {}.type
+        return Gson().fromJson<CourseBean>(courseData, type)
+    }
+
+    private suspend fun getCourseByNetWork(week: Int): CourseBean? {
+        return try {
+            val bean = api.getCourse(week)
+            mEdit.putString(KEYS.WEEK + week, Gson().toJson(bean)).apply()
+            bean
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
     private fun decodeBean(bean: CourseBean): ArrayList<Schedule> {
         if (bean.result != "1") return arrayListOf()
@@ -95,27 +107,6 @@ class CourseRepository(private val api: FeatureApi) {
 
         return list
     }
-
-
-    private fun getCourseByCache(week: Int): CourseBean? {
-
-        val courseData = mShared.getString(KEYS.WEEK + week, null) ?: return null
-        val type = object : TypeToken<CourseBean>() {}.type
-        return Gson().fromJson<CourseBean>(courseData, type)
-    }
-
-    private suspend fun getCourseByNetWork(week: Int): CourseBean? {
-        return try {
-            val bean = api.getCourse(week)
-            mEdit.putString(KEYS.WEEK + week, Gson().toJson(bean)).apply()
-            bean
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
 
     private suspend fun getStartTime(): String? {
         val startTime = mShared.getString(KEYS.START_TIME, null)

@@ -2,7 +2,6 @@ package cn.kaicity.app.iguangke.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.MutableLiveData
 import cn.kaicity.app.iguangke.App
 import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.StateBean
@@ -11,11 +10,12 @@ import cn.kaicity.app.iguangke.data.network.NetWorkCreator
 import cn.kaicity.app.iguangke.data.network.api.LoginApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.kunminx.architecture.ui.callback.UnPeekLiveData
 
 
 class UserRepository(private val service: LoginApi) {
 
-    val sp = App.context.getSharedPreferences(KEYS.USER, Context.MODE_PRIVATE)
+    val sp: SharedPreferences = App.context.getSharedPreferences(KEYS.USER, Context.MODE_PRIVATE)
 
     fun saveUser(userBean: UserBean) {
         val userData = Gson().toJson(userBean)
@@ -37,7 +37,7 @@ class UserRepository(private val service: LoginApi) {
 
     private suspend fun getUserByToken(
         userBean: UserBean,
-        mUserLiveData: MutableLiveData<StateBean<UserBean>>
+        mUserLiveData: UnPeekLiveData<StateBean<UserBean>>
     ) {
         val bean = service.getUserByToken()
         if (bean.result != "1") {
@@ -47,7 +47,7 @@ class UserRepository(private val service: LoginApi) {
         }
     }
 
-    suspend fun getUserBean(mUserLiveData: MutableLiveData<StateBean<UserBean>>) {
+    suspend fun getUserBean(mUserLiveData: UnPeekLiveData<StateBean<UserBean>>) {
 
         val userBean = getUserBySP()
         if (userBean != null) {
@@ -60,14 +60,15 @@ class UserRepository(private val service: LoginApi) {
 
     }
 
+
     private fun initTokenInOkHttp(userBean: UserBean) {
         NetWorkCreator.token = userBean.token
         NetWorkCreator.userId = userBean.userId
     }
 
-    fun clear() {
 
-        val shared: SharedPreferences =
+    fun clearCourse() {
+         val shared: SharedPreferences =
             App.context.getSharedPreferences(KEYS.COURSE, Context.MODE_PRIVATE)
         val editor = shared.edit()
         editor.clear()
