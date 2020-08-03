@@ -1,4 +1,4 @@
-package cn.kaicity.app.superdownload.util
+package cn.kaicity.app.iguangke.util
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -106,7 +106,7 @@ class UpdateUtil(val bean: VersionBean) {
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             val contentUri = FileProvider.getUriForFile(
                 context,
-                "cn.kaicity.app.superdownload.fileProvider",
+                "cn.kaicity.app.iguangke.fileProvider",
                 file
             )
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive")

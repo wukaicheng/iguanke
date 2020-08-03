@@ -18,11 +18,7 @@ import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentMainBinding
 import cn.kaicity.app.iguangke.ui.base.BaseFragment
 import cn.kaicity.app.iguangke.ui.user.UserViewModel
-import cn.kaicity.app.iguangke.util.InjectorUtil
-import cn.kaicity.app.iguangke.util.MultiUtil
-import cn.kaicity.app.iguangke.util.showMessageDialog
-import cn.kaicity.app.iguangke.util.showSnack
-import cn.kaicity.app.superdownload.util.UpdateUtil
+import cn.kaicity.app.iguangke.util.*
 
 
 class MainFragment : BaseFragment() {
