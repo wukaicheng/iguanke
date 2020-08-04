@@ -13,7 +13,6 @@ import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
 import cn.kaicity.app.iguangke.ui.feature.FeatureViewModel
 import cn.kaicity.app.iguangke.ui.other.ChildFragment
 import cn.kaicity.app.iguangke.util.InjectorUtil
-import cn.kaicity.app.iguangke.util.LogUtil
 import cn.kaicity.app.iguangke.util.showSnack
 import com.github.nukc.stateview.StateView
 

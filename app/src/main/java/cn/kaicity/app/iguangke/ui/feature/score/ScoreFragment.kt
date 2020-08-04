@@ -64,7 +64,7 @@ class ScoreFragment : ChildFragment() {
     override fun observeLiveData() {
 
         mUserViewModel.mUserLiveData.observe(this, Observer {
-            setUserHeader(viewBinding.userHeader, it.name, it.xh, it.headImage)
+            setUserHeader(viewBinding.userHeader, it.name, it.studentID, it.headImage)
             viewBinding.userHeader.endImg.visibility = View.GONE
             getScore()
         })

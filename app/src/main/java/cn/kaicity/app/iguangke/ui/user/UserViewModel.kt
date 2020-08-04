@@ -5,9 +5,7 @@ import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.data.repository.UserRepository
 import cn.kaicity.app.iguangke.ui.base.BaseViewModel
 
-class UserViewModel(
-    private val mRepo: UserRepository
-) : BaseViewModel() {
+class UserViewModel(private val mRepo: UserRepository) : BaseViewModel() {
 
     val mUserLiveData = MutableLiveData<UserBean>()
 
@@ -20,7 +18,7 @@ class UserViewModel(
     }
 
     fun loginOut(){
-
+        mRepo.loginOut()
     }
 
 }

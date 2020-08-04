@@ -13,6 +13,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.kaicity.app.iguangke.R
+import cn.kaicity.app.iguangke.data.KEYS
 import cn.kaicity.app.iguangke.data.bean.StateBean
 import cn.kaicity.app.iguangke.data.bean.UserBean
 import cn.kaicity.app.iguangke.databinding.FragmentMainBinding
@@ -62,12 +63,13 @@ class MainFragment : BaseFragment() {
                 }
 
                 StateBean.SUCCESS -> {
-                    showSnack("success")
+                    startToUserFragment()
                 }
             }
 
         }
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,8 +176,21 @@ class MainFragment : BaseFragment() {
     ) {
         itemText.transitionName = title
         val extras = FragmentNavigatorExtras(itemText to title)
-        val bundle = bundleOf("title" to title)
+        val bundle = bundleOf(KEYS.TITLE to title)
         findNavController().navigate(id, bundle, null, extras)
 
     }
+
+    private fun startToUserFragment() {
+        viewBinding.userHeader.userIcon.transitionName = KEYS.IMAGE
+        viewBinding.userHeader.userName.transitionName = KEYS.TITLE
+        val extras = FragmentNavigatorExtras(
+            viewBinding.userHeader.userName to KEYS.TITLE,
+            viewBinding.userHeader.userIcon to KEYS.IMAGE
+        )
+        findNavController().navigate(R.id.action_mainFragment_to_userFragment, null, null, extras)
+
+
+    }
+
 }

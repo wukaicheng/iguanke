@@ -24,6 +24,7 @@
         android:layout_margin="24dp"
         app:iconSignifier="@drawable/ic_account"
         app:labelText="@string/account"
+        app:primaryColor="@color/accent"
         app:panelBackgroundColor="@android:color/white">
 
         <studio.carbonylgroup.textfieldboxes.ExtendedEditText
@@ -39,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
+        app:primaryColor="@color/accent"
         app:iconSignifier="@drawable/ic_passwd"
         app:labelText="@string/password"
         app:panelBackgroundColor="@android:color/white">

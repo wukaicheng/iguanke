@@ -77,7 +77,7 @@ class LoginRepository(private val service: LoginApi) {
                     nickName = nickName,
                     token = headers["XPS-Token"] ?: "",
                     userId = headers["XPS-UserId"] ?: "",
-                    xh = xh,
+                    studentID = xh,
                     className = bjmc,
                     readIngYear = rxnj,
                     disciplineName = zymc,

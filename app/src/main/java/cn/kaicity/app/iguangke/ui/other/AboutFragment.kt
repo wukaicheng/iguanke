@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
+import androidx.core.view.setPadding
 import cn.kaicity.app.iguangke.BuildConfig
 import cn.kaicity.app.iguangke.R
 import cn.kaicity.app.iguangke.databinding.FragmentAboutBinding
 import cn.kaicity.app.iguangke.databinding.LayoutHeaderBinding
+import cn.kaicity.app.iguangke.util.LogUtil
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 
@@ -25,17 +29,18 @@ class AboutFragment : ChildFragment() {
     ): View? {
 
         viewBinding = FragmentAboutBinding.inflate(inflater)
+        viewBinding.version.text = BuildConfig.VERSION_NAME
         val aboutView = createAboutView()
+
         viewBinding.root.addView(aboutView)
         return viewBinding.root
     }
 
     private fun createAboutView(): View {
+R.layout.about_page
         return AboutPage(requireContext())
             .isRTL(false)
-            .setImage(R.mipmap.ic_launcher)
             .setDescription(getString(R.string.description))
-            .addItem(getVersion())
             .addGroup("源代码")
             .addItem(getGitHubRepo())
             .addItem(getGiteeRepo())
@@ -47,13 +52,6 @@ class AboutFragment : ChildFragment() {
 
     override fun getHeaderViewBinding(): LayoutHeaderBinding {
         return LayoutHeaderBinding.bind(viewBinding.root)
-    }
-
-
-    private fun getVersion():Element{
-        return Element()
-            .setTitle("Version:"+BuildConfig.VERSION_NAME)
-            .setValue("test")
     }
 
     private fun getGitHubRepo(): Element {
@@ -69,6 +67,7 @@ class AboutFragment : ChildFragment() {
 
         return gitHubElement
     }
+
     private fun getGiteeRepo(): Element {
         val giteeElement = Element()
         giteeElement.title = "Gitee"

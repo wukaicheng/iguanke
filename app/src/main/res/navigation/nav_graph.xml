@@ -49,12 +49,19 @@
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right" />
         <action
+            android:id="@+id/action_mainFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right"
-            android:id="@+id/action_mainFragment_to_aboutFragment"
-            app:destination="@id/aboutFragment" />
+            app:popExitAnim="@animator/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_userFragment"
+            app:destination="@id/userFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
     </fragment>
 
@@ -90,17 +97,21 @@
 
     <fragment
         android:id="@+id/newDetailFragment"
-        tools:layout="@layout/fragment_news_detail"
         android:name="cn.kaicity.app.iguangke.ui.feature.news.NewDetailFragment"
-        android:label="NewDetailFragment" />
+        android:label="NewDetailFragment"
+        tools:layout="@layout/fragment_news_detail" />
 
     <fragment
         android:id="@+id/courseFragment"
-        tools:layout="@layout/fragment_course"
         android:name="cn.kaicity.app.iguangke.ui.feature.course.CourseFragment"
-        android:label="CourseFragment" />
+        android:label="CourseFragment"
+        tools:layout="@layout/fragment_course" />
     <fragment
         android:id="@+id/aboutFragment"
         android:name="cn.kaicity.app.iguangke.ui.other.AboutFragment"
         android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="cn.kaicity.app.iguangke.ui.user.UserFragment"
+        android:label="UserFragment" />
 </navigation>

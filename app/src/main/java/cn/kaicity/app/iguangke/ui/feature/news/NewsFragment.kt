@@ -83,6 +83,7 @@ class NewsFragment : ChildFragment() {
                 viewModel.getNews(pageNo)
             }
         }
+
     }
 
     override fun getHeaderViewBinding(): LayoutHeaderBinding {
@@ -113,6 +114,7 @@ class NewsFragment : ChildFragment() {
                 }
 
                 StateBean.SUCCESS -> {
+                    viewBinding.stateView.showContent()
 
                     it.bean?.run {
                         if (isLoadMore) {
@@ -126,7 +128,6 @@ class NewsFragment : ChildFragment() {
                         } else {
 
                             if (viewModel.mNewsListLiveData.value == null) {
-                                viewBinding.stateView.showContent()
                                 val list = ArrayList<NewsItem>()
                                 list.addAll(this.items)
                                 viewModel.mNewsListLiveData.value = list

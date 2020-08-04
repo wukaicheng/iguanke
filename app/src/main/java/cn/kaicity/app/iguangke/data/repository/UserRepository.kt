@@ -89,5 +89,9 @@ class UserRepository(
 
     }
 
+    fun loginOut() {
+        sp.edit().clear().apply()
+    }
+
 
 }

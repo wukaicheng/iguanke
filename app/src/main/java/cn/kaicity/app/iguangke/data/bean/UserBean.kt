@@ -11,9 +11,11 @@ package cn.kaicity.app.iguangke.data.bean
  * @property readIngYear Int 入学年份
  * @property disciplineName String 专业名称
  * @property collegeName String 学院名称
- * @property xh String 学号
+ * @property nickName String 昵称
+ * @property studentID String 学号
  * @constructor
  */
+
 data class UserBean(
     val name: String,
     val token: String,
@@ -24,5 +26,5 @@ data class UserBean(
     val disciplineName: String,
     val collegeName: String,
     val nickName:String,
-    val xh: String
+    val studentID: String
 )

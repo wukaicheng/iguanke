@@ -1,6 +1,5 @@
 package cn.kaicity.app.iguangke.ui.user
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import cn.kaicity.app.iguangke.data.repository.UserRepository
